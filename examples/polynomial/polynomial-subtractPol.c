@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <unistd.h>
 
 #include <biagra/polynomial.h>
 #include <biagra/resmem.h>
 #include <biagra/const.h>
 
-#include "polsupport.h"
+#include "../support/polsupport.h"
 
 /*                                                                      */
 /*      B.I.A.G.R.A.    (c) 1998 Jose Angel de Bustos Perez             */
@@ -16,37 +17,48 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of dblPtMemAllocVec usage */
+/* Simple example of subtractPol usage */
 
 int main (void) {
 
-  /* Polynomial declaration */
-  biaRealPol myPol;
+  /* polynomial declaration */
+  biaRealPol myPol1,
+	     myPol2,
+	     myRes;
 
   /* Polynomial order */
-  myPol.intDegree = 5;
+  myPol1.intDegree = 3;
+  myPol2.intDegree = 5;
 
   int i;
 
-  double x0 = BIA_PI,
-	 px0 = .0;
-
   /* polynomial generation */
-  i = randomPol(&myPol);
+  i = randomPol(&myPol1);
 
   if ( i == BIA_MEM_ALLOC ) {
     printf("Error in memory assignation.\n");
     return BIA_MEM_ALLOC;
   }
 
+  sleep(1);
+
+  i = randomPol(&myPol2);
+
+  if ( i == BIA_MEM_ALLOC  ) {
+    printf("Error in memory assignation.\n");
+    return BIA_MEM_ALLOC;
+  }
+
   /* evaluate polynomial */
-  px0 = dblEvaluatePol(&myPol, x0);
+  i = subtractPol(&myPol1, &myPol2, &myRes);
 
   /* Printing polynomial to stdout */
   printf("p(x) = ");
-  pol2Stdout(&myPol);
-  printf("x0 = %g\n", x0);
-  printf("p(x0) = %g\n", px0);
+  pol2Stdout(&myPol1);
+  printf("q(x) = ");
+  pol2Stdout(&myPol2);
+  printf("p(x) - q(x) = ");
+  pol2Stdout(&myRes);
 
   return BIA_TRUE;
 }

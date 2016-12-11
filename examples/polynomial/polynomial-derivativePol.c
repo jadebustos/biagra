@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #include <biagra/polynomial.h>
+#include <biagra/resmem.h>
 #include <biagra/const.h>
 
-#include "polsupport.h"
+#include "../support/polsupport.h"
 
 /*                                                                      */
 /*      B.I.A.G.R.A.    (c) 1998 Jose Angel de Bustos Perez             */
@@ -16,31 +16,40 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of biaRealPol usage */
+/* Simple example of derivativePol usage */
 
 int main (void) {
 
-  /* Polynomial degree */
-  int polDegree = 3,
-      i;
+  /* Vector declaration */
+  biaRealPol myPol,
+	     polDer;
 
-  /* Polynomial declaration */
-  biaRealPol myPol;
+  /* Polynomial order */
+  myPol.intDegree = 5;
 
-  /* Polynomial degree */
-  myPol.intDegree = polDegree;
+  int i;
 
-  /* polynomial initialization */
+  /* polynomial generation */
   i = randomPol(&myPol);
 
   if ( i == BIA_MEM_ALLOC ) {
-    printf("Error in memory assignation.\n");
+    printf("Error in memory assignation (myPol).\n");
+    return BIA_MEM_ALLOC;
+  }
+
+  /* first order derivative */
+  i = derivativePol(&myPol, &polDer, 1);
+
+  if ( i == BIA_MEM_ALLOC  ) {
+    printf("Error in memory assignation (polDer).\n");
     return BIA_MEM_ALLOC;
   }
 
   /* Printing polynomial to stdout */
   printf("p(x) = ");
   pol2Stdout(&myPol);
+  printf("p'(x) = ");
+  pol2Stdout(&polDer);
 
   return BIA_TRUE;
 }
