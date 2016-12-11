@@ -37,7 +37,7 @@ int explicitRungeKutta(biaDataRK *ptData, double (*IVP)(double dblX, double dblY
       k;
         
   double  dblCurrentPoint,	/* point where the approximation is being calculated */
-   	  dbliPrevPoint, 	/* previous point */
+   	  dblPrevPoint, 	/* previous point */
           dblX,
           dblY,
           *dblK;		/* vector to store the k_i */       
@@ -124,10 +124,10 @@ int classicRungeKuttaCoefs(biaDataRK *ptData) {
 
   /* free pointers if necessary */
   if ( ptData->strCoefs.dblC != NULL )
-    free(ptData->strCoefs.dblC)
+    free(ptData->strCoefs.dblC);
 
   if ( ptData->strCoefs.dblB != NULL )
-    free(ptData->strCoefs.dblB)
+    free(ptData->strCoefs.dblB);
 
   if ( ptData->strCoefs.dblMatrix != NULL )
     freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
@@ -149,7 +149,7 @@ int classicRungeKuttaCoefs(biaDataRK *ptData) {
 	free(ptData->strCoefs.dblB);
 	free(ptData->strCoefs.dblC);
 	freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
-	return (BIAM_MEM_ALLOC);
+	return (BIA_MEM_ALLOC);
 	}
 
   /* b[i] coefs */
@@ -198,10 +198,10 @@ int heunRungeKuttaCoefs(biaDataRK *ptData) {
 
   /* free pointers if necessary */
   if ( ptData->strCoefs.dblC != NULL )
-    free(ptData->strCoefs.dblC)
+    free(ptData->strCoefs.dblC);
 
   if ( ptData->strCoefs.dblB != NULL )
-    free(ptData->strCoefs.dblB)
+    free(ptData->strCoefs.dblB);
 
   if ( ptData->strCoefs.dblMatrix != NULL )
     freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
@@ -266,10 +266,10 @@ int kuttaRungeKuttaCoefs(biaDataRK *ptData) {
 
   /* free pointers if necessary */
   if ( ptData->strCoefs.dblC != NULL )
-    free(ptData->strCoefs.dblC)
+    free(ptData->strCoefs.dblC);
 
   if ( ptData->strCoefs.dblB != NULL )
-    free(ptData->strCoefs.dblB)
+    free(ptData->strCoefs.dblB);
 
   if ( ptData->strCoefs.dblMatrix != NULL )
     freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
@@ -334,10 +334,10 @@ int modifiedEulerRungeKuttaCoefs(biaDataRK *ptData) {
 
   /* free pointers if necessary */
   if ( ptData->strCoefs.dblC != NULL )
-    free(ptData->strCoefs.dblC)
+    free(ptData->strCoefs.dblC);
 
   if ( ptData->strCoefs.dblB != NULL )
-    free(ptData->strCoefs.dblB)
+    free(ptData->strCoefs.dblB);
 
   if ( ptData->strCoefs.dblMatrix != NULL )
     freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
@@ -396,10 +396,10 @@ int improvedEulerRungeKuttaCoefs(biaDataRK *ptData) {
 
   /* free pointers if necessary */
   if ( ptData->strCoefs.dblC != NULL )
-    free(ptData->strCoefs.dblC)
+    free(ptData->strCoefs.dblC);
 
   if ( ptData->strCoefs.dblB != NULL )
-    free(ptData->strCoefs.dblB)
+    free(ptData->strCoefs.dblB);
 
   if ( ptData->strCoefs.dblMatrix != NULL )
     freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
