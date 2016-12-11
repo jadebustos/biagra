@@ -45,7 +45,9 @@ typedef struct {
 %
 \FloatBarrier
 
-\subsection{\texttt{biaDataRK} data structure}
+\note{See appendix \ref{ch:runge} if you need information about Butcher matricial notation.}
+
+\subsection{\texttt{biaDataRK} data structure} \label{sec:biaDataRK}
 
 This structure is used to store all the data needed to apply a Runge-Kutta method.\\
 
@@ -104,106 +106,92 @@ typedef struct {
 %
 \FloatBarrier
 
-\section{C\'alculo del n\'umero de nodos}
+\section{Node number calculations}
 
-\subsection{intNumNodos}
-Esta funci\'on calcula el n\'umero de nodos que podemos situar en un
-intervalo.\newline
+\subsection{\texttt{intNodeNumber} function}
 
-El prototipo de esta funci\'on es el siguiente:
+This function gets the number of nodes that can be placed in an interval. All nodes are equidistant.\\
 
-\begin{center}
-\emph{int \textbf{intNumNodos}(double dblLong, double dblPaso)}
-\end{center}
-
+The definition of this function:
+%
+\begin{verbatim}
+int intNodeNumber(double dblLong, double dblStepSize)
+\end{verbatim}
+%
+where:
+%
 \begin{description}
-\item[dblLong] longitud del intervalo.
-\item[dblPaso] distancia entre los nodos.
+\item[dblLong] interval length.
+\item[dblStepSize] distance between two nodes.
 \end{description}
 
-La funci\'on devuelve el n\'umero de nodos que podemos situar en dicho
-intervalo.\newline
+The function returns the number of nodes that can be placed.\\ \\
+%
+\note{Arguments are supposed to be different from zero.}
+\ \\
+\note{Arguments are supposed to be positive.}
 
-Por ejemplo:
-
-\begin{center}
-\emph{intResultado = \textbf{intNumNodos}(dblLong, dblPaso);}
-\end{center}
-
-Almacenar\'{\i}a en \emph{intResultado} el n\'umero de nodos que podemos 
-situar en un intervalo de longitud \emph{dblLong} e igualmente espaciados
-por \emph{dblPaso}.\\
-
-Observaciones:
-
-\begin{itemize}
-\item La funci\'on supone que los argumentos que recibe son distintos de cero.
-\item La funci\'on considerar\'a siempre los argumentos que recibe como
-positivos, aunque sean negativos.
-\end{itemize}
-
-\section{Explicit Runge-Kutta methods}
+\section{Explicit Runge-Kutta methods (scalar problems)}
 
 \subsection{\texttt{ExplicitRungeKutta} function}
 
-Funci\'on que resuelve un \emph{P.V.I.}\footnote{Problema de valores 
-iniciales.} mediante un m\'etodo \emph{Runge-Kutta expl\'{\i}cito}.\newline
+This function solves an \emph{I.V.P.} using an explicit Runge-Kutta method.\\
 
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{explicitRungeKutta}(biaDataRK *ptstrData,\\
-double (*IVP)(double dblX, double dblY))}
-\end{center} 
-
+The definition of this function:
+%
+\begin{verbatim}
+int explicitRungeKutta(biaDataRK *ptData, 
+               double (*IVP)(double dblX, double dblY)
+\end{verbatim} 
+%
+where:
+%
 \begin{description}
-\item[ptstrDatos] \emph{puntero} a una variable del tipo 
-\textbf{DatosRK}\footnote{Apartado (\ref{sec:datosRK}) en la p\'agina 
-\pageref{sec:datosRK}.}, la cual contiene los datos necesarios para
-la resoluci\'on del problema.
-\item[PVI] \emph{puntero} a una funci\'on que devuelve el valor de la
-ecuaci\'on diferencial en un punto.
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. This variable contains all the necessary data to solve the \emph{I.V.P.}
+\item[PVI] C function's pointer to a function implementing the \emph{O.D.E.}. This functions needs to have two double arguments and returns the value of the \emph{I.V.P.}:
 \begin{description}
-	\item[dblX] punto en el que queremos evaluar la ecuaci\'on diferencial.
-	\item[dblY] valor de la ecuaci\'on diferencial en \emph{dblX}.
+	\item[dblX] point where we want to evaluate the \emph{O.D.E.}
+	\item[dblY] \emph{O.D.E.} value in \texttt{dblX} ($y_i \approx y(x_i)$).
 \end{description}
 \end{description}
 
-Por ejemplo, si tenemos el siguiente \emph{P.V.I.}:
-
+The following codes are returned:
+%
 \begin{center}
-$
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
+\hline
+\textbf{BIA\_TRUE} & Success \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Usage example}
+
+For instance, to solve this \emph{I.V.P.}:
+%
+\begin{displaymath}
 \left \{ \begin{array}{l}
 y' = y(x) * \frac{x-y(x)}{x^2} \\
 y(1) = 2
 \end{array} \right.
-$
-\end{center}
-
-la funci\'on \emph{PVI} ser\'{\i}a:
-
+\end{displaymath}
+%
+the implementation of the \texttt{IVP} would be:
+%
 \begin{verbatim}
-double PVI(double dblX, double dblY)
-{
-double  dblResultado;
+double IVP(double dblX, double dblY) {
+  double  dblResultado;
 
-dblResultado = dblY*((dblX-dblY)/(dblX*dblX));
+  dblRes = dblY*((dblX-dblY)/(dblX*dblX));
 
-return(dblResultado);
+  return (dblRes);
 }
 \end{verbatim}
 
-La funci\'on, \emph{ExplicitRungeKutta}, devuelve los siguientes c\'odigos:
 
-\begin{center}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{ERR\_AMEM} & Hubo error en la asignaci\'on de memoria. \\
-\hline
-\textbf{BIA\_TRUE} & Success. \\
-\hline
-\end{tabular}
-\end{center}
+
 
 \begin{center}
 \emph{intResultado = \textbf{ExplicitRungeKutta}(\&varstrDatRK, PVI);}
