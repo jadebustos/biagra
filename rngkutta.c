@@ -46,7 +46,7 @@ int explicitRungeKutta(biaDataRK *ptData, double (*IVP)(double dblX, double dblY
   (ptData->dblStepSize) = fabs((ptData->dblStepSize));
      
   /* memory reservation */        
-  dblK = (double *)calloc(ptData->strCoefs.intStages, sizeof(double));
+  dblK = dblPtMemAllocVec(ptData->strCoefs.intStages);
 
   if ( dblK == NULL ) {
     return (BIA_MEM_ALLOC);
