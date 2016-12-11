@@ -13,11 +13,17 @@ CC=gcc
 # Object files
 EXTOBJ=o
 
+# version
+BIAVERSION=1.0.0
+
 # Library name
 LIBRARY=libbiagra.a
 
 # includes dir
 INCLUDESDIR=/usr/include/biagra
+
+# examples dir
+EXAMPLESDIR=/usr/share/biagra-$BIAVERSION
 
 case $1 in
 	
@@ -38,23 +44,35 @@ case $1 in
     echo "Compiling $i ..."
     $CC -c $i -o $OBJFILENAME
   done
-  echo "Creating static library $LIBRARY ..."
+  echo "Creating static library $LIBRARY-$BIAVERSION ..."
 
   for i in *.o
   do
-    ar cru $LIBRARY $i
+    ar cru $LIBRARY-$BIAVERSION $i
     rm $i
   done
 
-  echo "Creating library index"
-  ranlib $LIBRARY
-  mv $LIBRARY /usr/lib/$LIBRARY;;
+  echo "Creating library index ..."
+  ranlib $LIBRARY-$BIAVERSION
+  mv $LIBRARY-$BIAVERSION /usr/lib/$LIBRARY-$BIAVERSION
+  rm -f /usr/lib/$LIBRARY
+  rm -f $LIBRARY
+  ln -s /usr/lib/$LIBRARY-$BIAVERSION /usr/lib/$LIBRARY
+
+  echo "Copying examples ..."
+  mkdir -p $EXAMPLESDIR
+  cp -prf examples/* $EXAMPLESDIR;;
 
   uninstall)
-    rm -Rf $INCLUDESDIR;;
+    echo "Removing header files ..."
+    rm -Rf $INCLUDESDIR
+    echo "Removing example files ..."
+    rm -Rf $EXAMPLESDIR
+    echo "Removing library ..."
+    rm -f /usr/lib/$LIBRARY-$BIAVERSION /usr/lib/$LIBRARY;;
 
   *)
-  echo "Argument required: static-install";;
+  echo "Argument required: static";;
 
 esac
 
