@@ -123,16 +123,14 @@ int classicRungeKuttaCoefs(biaDataRK *ptData) {
   ptData->intImplicit = BIA_IMPLICIT_RK_FALSE; /* explicit method */
 
   /* free pointers if necessary */
-
   if ( ptData->strCoefs.dblC != NULL )
     free(ptData->strCoefs.dblC)
 
   if ( ptData->strCoefs.dblB != NULL )
     free(ptData->strCoefs.dblB)
 
-  if ( ptData->strCoefs.dblMatrix != NULL ) {
-	freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
-  }
+  if ( ptData->strCoefs.dblMatrix != NULL )
+    freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
 
   /* memory reservation */
 
@@ -181,323 +179,263 @@ int classicRungeKuttaCoefs(biaDataRK *ptData) {
   return (BIA_TRUE);
 }
 
+
 /*                                                                      */
-/* Funcion que inicializa los coeficientes del metodo de HEUN,          */
-/* metodo RUNGE-KUTTA de tres etapas, la funcion asigna memoria a los   */
-/* punteros de la estructura DatosRK, por lo que es necesario que no    */
-/* esten dimensionados cuando se le pase como parametro la variable de  */
-/* estructura a la funcion.                                             */
+/* Function to initialize Heun Runge-Kutta coefficients.                */
+/* Three-stage method.                                                  */
 /*                                                                      */
-/* La funcion devuelve los siguientes codigos:				*/
-/*									*/
-/*	TRUE     -> Se inicializaron con exito los coeficientes.	*/
-/*      ERR_AMEM -> Hubo un error en la asignacion de memoria.		*/
+/* Following values are returned:                                       */
+/*                                                                      */
+/*      BIA_TRUE      -> Success                                        */
+/*      BIA_MEM_ALLOC -> Memory allocation error                        */
 /*                                                                      */
 
-int MetodoHeun(biaDataRK *ptData)
+int heunRungeKuttaCoefs(biaDataRK *ptData) {
 
-{
-/* FUNCION QUE INICIALIZA LOS COEFICIENTES PARA UTILIZAR EL METODO
-   DE "HEUN" PARA LA RESOLUCION NUMERICA DE E.D.O's */
+  ptData->strCoefs.intStages = 3; /* method stages */
 
-int 	intEtapas = 3;	/* NUMERO DE ETAPAS DEL METODO */
+  ptData->intImplicit = BIA_IMPLICIT_RK_FALSE; /* explicit method */
 
-/* RESERVA DE MEMORIA */
+  /* free pointers if necessary */
+  if ( ptData->strCoefs.dblC != NULL )
+    free(ptData->strCoefs.dblC)
 
-ptstrDatos->strCoefi.dblC = (double *)dblPtAsigMemVec(intEtapas);
+  if ( ptData->strCoefs.dblB != NULL )
+    free(ptData->strCoefs.dblB)
 
-if ( ptstrDatos->strCoefi.dblC == NULL )
-	{
-	return (ERR_AMEM);	/* FIN */
+  if ( ptData->strCoefs.dblMatrix != NULL )
+    freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
+
+  /* memory reservation */
+  ptData->strCoefs.dblC = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblC == NULL )
+    return (BIA_MEM_ALLOC);
+
+  ptData->strCoefs.dblB = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblB == NULL ) {
+	free(ptData->strCoefs.dblC);
+	return (BIA_MEM_ALLOC);
 	}
 
-ptstrDatos->strCoefi.dblB = (double *)dblPtAsigMemVec(intEtapas);
-
-if ( ptstrDatos->strCoefi.dblB == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblC);
-	return (ERR_AMEM);	/* FIN */
+  ptData->strCoefs.dblMatrix = (double **)dblPtMemAllocLowerTrMat(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblMatrix == NULL ) {
+	free(ptData->strCoefs.dblB);
+	free(ptData->strCoefs.dblC);
+	freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
+	return (BIA_MEM_ALLOC);
 	}
 
-ptstrDatos->strCoefi.dblMatriz = (double **)dblPtAsigMemMatTrInf(intEtapas);
+  /* b[i] coefs */
+  ptData->strCoefs.dblB[0] = 1./4.;
+  ptData->strCoefs.dblB[1] = .0;
+  ptData->strCoefs.dblB[2] = 3./4.;
 
-if ( ptstrDatos->strCoefi.dblMatriz == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblB);
-	free(ptstrDatos->strCoefi.dblC);
-	FreeMemDblMat(ptstrDatos->strCoefi.dblMatriz, intEtapas);
-	return(ERR_AMEM);	/* FIN */
-	}
+  /* c[i] coefs */
+  ptData->strCoefs.dblC[0] = .0;
+  ptData->strCoefs.dblC[1] = 1./3.;
+  ptData->strCoefs.dblC[2] = 2./3.;
 
-/* NUMERO DE ETAPAS DEL METODO */
+  /* a[i][j] coefs */
+  ptData->strCoefs.dblMatrix[0][0] = .0;
 
-ptstrDatos->strCoefi.intEtapas = intEtapas;
+  ptData->strCoefs.dblMatrix[1][0] = 1./3.;
+  ptData->strCoefs.dblMatrix[1][1] = .0;
 
-/* ESTE METODO ES UN METODO EXPLICITO */
+  ptData->strCoefs.dblMatrix[2][0] = .0;
+  ptData->strCoefs.dblMatrix[2][1] = 2./3.;
+  ptData->strCoefs.dblMatrix[2][2] = .0;
 
-ptstrDatos->intImplicito = FALSE;
-
-/* COEFICIENTES b[i] */
-
-ptstrDatos->strCoefi.dblB[0] = 1./4.;
-ptstrDatos->strCoefi.dblB[1] = .0;
-ptstrDatos->strCoefi.dblB[2] = 3./4.;
-
-/* COEFICIENTES c[i] */
-
-ptstrDatos->strCoefi.dblC[0] = .0;
-ptstrDatos->strCoefi.dblC[1] = 1./3.;
-ptstrDatos->strCoefi.dblC[2] = 2./3.;
-
-/* COEFICIENTES a[i][j] */
-
-ptstrDatos->strCoefi.dblMatriz[0][0] = .0;
-
-ptstrDatos->strCoefi.dblMatriz[1][0] = 1./3.;
-ptstrDatos->strCoefi.dblMatriz[1][1] = .0;
-
-ptstrDatos->strCoefi.dblMatriz[2][0] = .0;
-ptstrDatos->strCoefi.dblMatriz[2][1] = 2./3.;
-ptstrDatos->strCoefi.dblMatriz[2][2] = .0;
-
-return (TRUE);
+  return (BIA_TRUE);
 }
 
 /*                                                                      */
-/* Funcion que inicializa los coeficientes del metodo de KUTTA,         */
-/* metodo RUNGE-KUTTA de tres etapas, la funcion asigna memoria a los   */
-/* punteros de la estructura DatosRK, por lo que es necesario que no    */
-/* esten dimensionados cuando se le pase como parametro la variable de  */
-/* estructura a la funcion.                                             */
+/* Function to initialize Kutta Runge-Kutta coefficients.               */
+/* Three-stage method.                                                  */
 /*                                                                      */
-/* La funcion devuelve los siguientes codigos:				*/
-/*									*/
-/*	TRUE     ->  Se inicializaron con exito los coeficientes.	*/
-/*      ERR_AMEM ->  Hubo un error en la asignacion de memoria.		*/
+/* Following values are returned:                                       */
+/*                                                                      */
+/*      BIA_TRUE      -> Success                                        */
+/*      BIA_MEM_ALLOC -> Memory allocation error                        */
 /*                                                                      */
 
-int MetodoKutta(biaDataRK *ptData)
+int kuttaRungeKuttaCoefs(biaDataRK *ptData) {
 
-{
-/* FUNCION QUE INICIALIZA LOS COEFICIENTES PARA UTILIZAR EL METODO
-   DE "KUTTA" PARA LA RESOLUCION NUMERICA DE E.D.O's */
+  ptData->strCoefs.intStages = 3; /* method stages */
 
-int 	intEtapas = 3;	/* NUMERO DE ETAPAS DEL METODO */
+  ptData->intImplicit = BIA_IMPLICIT_RK_FALSE; /* explicit method */
 
-/* RESERVA DE MEMORIA */
+  /* free pointers if necessary */
+  if ( ptData->strCoefs.dblC != NULL )
+    free(ptData->strCoefs.dblC)
 
-ptstrDatos->strCoefi.dblC = (double *)dblPtAsigMemVec(intEtapas);
+  if ( ptData->strCoefs.dblB != NULL )
+    free(ptData->strCoefs.dblB)
 
-if ( ptstrDatos->strCoefi.dblC == NULL )
-	{
-	return (ERR_AMEM);	/* FIN */
-	}
+  if ( ptData->strCoefs.dblMatrix != NULL )
+    freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
 
-ptstrDatos->strCoefi.dblB = (double *)dblPtAsigMemVec(intEtapas);
+  /* memory reservation */
+  ptData->strCoefs.dblC = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblC == NULL )
+    return (BIA_MEM_ALLOC);
 
-if ( ptstrDatos->strCoefi.dblB == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblC);
-	return (ERR_AMEM);	/* FIN */
-	}
+  ptData->strCoefs.dblB = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblB == NULL ) {
+        free(ptData->strCoefs.dblC);
+        return (BIA_MEM_ALLOC);
+        }
 
-ptstrDatos->strCoefi.dblMatriz = (double **)dblPtAsigMemMatTrInf(intEtapas);
+  ptData->strCoefs.dblMatrix = (double **)dblPtMemAllocLowerTrMat(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblMatrix == NULL ) {
+        free(ptData->strCoefs.dblB);
+        free(ptData->strCoefs.dblC);
+        freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
+        return (BIA_MEM_ALLOC);
+        }
 
-if ( ptstrDatos->strCoefi.dblMatriz == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblB);
-	free(ptstrDatos->strCoefi.dblC);
-	FreeMemDblMat(ptstrDatos->strCoefi.dblMatriz, intEtapas);
+  /* b[i] coefs */
+  ptData->strCoefs.dblB[0] = 1./6.;
+  ptData->strCoefs.dblB[1] = 2./3.;
+  ptData->strCoefs.dblB[2] = 1./6.;
 
-	return(ERR_AMEM);	/* FIN */
-	}
+  /* c[i] coefs */
+  ptData->strCoefs.dblC[0] = .0;
+  ptData->strCoefs.dblC[1] = 1./2.;
+  ptData->strCoefs.dblC[2] = 1.;
 
-/* NUMERO DE ETAPAS DEL METODO */
+  /* a[i][j] coefs */
+  ptData->strCoefs.dblMatrix[0][0] = .0;
 
-ptstrDatos->strCoefi.intEtapas = intEtapas;
+  ptData->strCoefs.dblMatrix[1][0] = 1./2.;
+  ptData->strCoefs.dblMatrix[1][1] = .0;
 
-/* ESTE METODO ES UN METODO EXPLICITO */
+  ptData->strCoefs.dblMatrix[2][0] = -1.;
+  ptData->strCoefs.dblMatrix[2][1] = 2.;
+  ptData->strCoefs.dblMatrix[2][2] = .0;
 
-ptstrDatos->intImplicito = FALSE;
-
-/* COEFICIENTES b[i] */
-
-ptstrDatos->strCoefi.dblB[0] = 1./6.;
-ptstrDatos->strCoefi.dblB[1] = 2./3.;
-ptstrDatos->strCoefi.dblB[2] = 1./6.;
-
-/* COEFICIENTES c[i] */
-
-ptstrDatos->strCoefi.dblC[0] = .0;
-ptstrDatos->strCoefi.dblC[1] = 1./2.;
-ptstrDatos->strCoefi.dblC[2] = 1.;
-
-/* COEFICIENTES a[i][j] */
-
-ptstrDatos->strCoefi.dblMatriz[0][0] = .0;
-
-ptstrDatos->strCoefi.dblMatriz[1][0] = 1./2.;
-ptstrDatos->strCoefi.dblMatriz[1][1] = .0;
-
-ptstrDatos->strCoefi.dblMatriz[2][0] = -1.;
-ptstrDatos->strCoefi.dblMatriz[2][1] = 2.;
-ptstrDatos->strCoefi.dblMatriz[2][2] = .0;
-
-return (TRUE);
+  return (BIA_TRUE);
 }
 
 /*                                                                      */
-/* Funcion que inicializa los coeficientes del metodo de EULER          */
-/* MODIFICADO, metodo RUNGE-KUTTA de dos etapas, la funcion asigna      */
-/* memoria a los punteros de la estructura DatosRK, por lo que es       */
-/* necesario que no esten dimensionados cuando se le pase como          */
-/* parametro la variable de estructura a la funcion.                    */
+/* Function to initialize Modified Euler Runge-Kutta coefficients.      */
+/* Two-stage method.                                                    */
 /*                                                                      */
-/* La funcion devuelve los siguientes codigos:				*/
-/*									*/
-/*	TRUE     ->  Se inicializaron con exito los coeficientes.	*/
-/*      ERR_AMEM ->  Hubo un error en la asignacion de memoria.		*/
+/* Following values are returned:                                       */
+/*                                                                      */
+/*      BIA_TRUE      -> Success                                        */
+/*      BIA_MEM_ALLOC -> Memory allocation error                        */
 /*                                                                      */
 
-int EulerModificado(biaDataRK *ptData)
+int modifiedEulerRungeKuttaCoefs(biaDataRK *ptData) {
 
-{
-/* FUNCION QUE INICIALIZA LOS COEFICIENTES PARA UTILIZAR EL METODO
-   DE "EULER MODIFICADO" PARA LA RESOLUCION NUMERICA DE E.D.O's */
+  ptData->strCoefs.intStages = 2; /* method stages */
 
-int 	intEtapas = 2;	/* NUMERO DE ETAPAS DEL METODO */
+  ptData->intImplicit = BIA_IMPLICIT_RK_FALSE; /* explicit method */
 
-/* RESERVA DE MEMORIA */
+  /* free pointers if necessary */
+  if ( ptData->strCoefs.dblC != NULL )
+    free(ptData->strCoefs.dblC)
 
-ptstrDatos->strCoefi.dblC = (double *)dblPtAsigMemVec(intEtapas);
+  if ( ptData->strCoefs.dblB != NULL )
+    free(ptData->strCoefs.dblB)
 
-if ( ptstrDatos->strCoefi.dblC == NULL )
-	{
-	return (ERR_AMEM);	/* FIN */
-	}
+  if ( ptData->strCoefs.dblMatrix != NULL )
+    freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
 
-ptstrDatos->strCoefi.dblB = (double *)dblPtAsigMemVec(intEtapas);
+  /* memory reservation */
+  ptData->strCoefs.dblC = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblC == NULL )
+    return (BIA_MEM_ALLOC);
 
-if ( ptstrDatos->strCoefi.dblB == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblC);
+  ptData->strCoefs.dblB = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblB == NULL ) {
+        free(ptData->strCoefs.dblC);
+        return (BIA_MEM_ALLOC);
+        }
 
-	return (ERR_AMEM);	/* FIN */
-	}
+  ptData->strCoefs.dblMatrix = (double **)dblPtMemAllocLowerTrMat(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblMatrix == NULL ) {
+        free(ptData->strCoefs.dblB);
+        free(ptData->strCoefs.dblC);
+        freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
+        return (BIA_MEM_ALLOC);
+        }
 
-ptstrDatos->strCoefi.dblMatriz = (double **)dblPtAsigMemMatTrInf(intEtapas);
+  /* b[i] coefs */
+  ptData->strCoefs.dblB[0] = .0;
+  ptData->strCoefs.dblB[1] = 1.;
 
-if ( ptstrDatos->strCoefi.dblMatriz == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblB);
-	free(ptstrDatos->strCoefi.dblC);
-	FreeMemDblMat(ptstrDatos->strCoefi.dblMatriz, intEtapas);
+  /* c[i] coefs */
+  ptData->strCoefs.dblC[0] = .0;
+  ptData->strCoefs.dblC[1] = 1./2.;
 
-	return(ERR_AMEM);	/* FIN */
-	}
+  /* a[i][j] coefs */
+  ptData->strCoefs.dblMatrix[0][0] = .0;
 
-/* NUMERO DE ETAPAS DEL METODO */
+  ptData->strCoefs.dblMatrix[1][0] = 1./2.;
+  ptData->strCoefs.dblMatrix[1][1] = .0;
 
-ptstrDatos->strCoefi.intEtapas = intEtapas;
-
-/* ESTE METODO ES UN METODO EXPLICITO */
-
-ptstrDatos->intImplicito = FALSE;
-
-/* COEFICIENTES b[i] */
-
-ptstrDatos->strCoefi.dblB[0] = .0;
-ptstrDatos->strCoefi.dblB[1] = 1.;
-
-/* COEFICIENTES c[i] */
-
-ptstrDatos->strCoefi.dblC[0] = .0;
-ptstrDatos->strCoefi.dblC[1] = 1./2.;
-
-/* COEFICIENTES a[i][j] */
-
-ptstrDatos->strCoefi.dblMatriz[0][0] = .0;
-
-ptstrDatos->strCoefi.dblMatriz[1][0] = 1./2.;
-ptstrDatos->strCoefi.dblMatriz[1][1] = .0;
-
-return (TRUE);
+  return (BIA_TRUE);
 }
 
 /*                                                                      */
-/* Funcion que inicializa los coeficientes del metodo de EULER MEJORADO */
-/* metodo RUNGE-KUTTA de dos etapas, la funcion asigna memoria a los    */
-/* punteros de la estructura DatosRK, por lo que es necesario que no    */
-/* esten dimensionados cuando se le pase como parametro la variable de  */
-/* estructura a la funcion.                                             */
+/* Function to initialize Improved Euler Runge-Kutta coefficients.      */
+/* Two-stage method.                                                    */
 /*                                                                      */
-/* La funcion devuelve los siguientes codigos:				*/
-/*									*/
-/*	TRUE     -> Se inicializaron con exito los coeficientes.	*/
-/*      ERR_AMEM -> Hubo un error en la asignacion de memoria.		*/
+/* Following values are returned:                                       */
+/*                                                                      */
+/*      BIA_TRUE      -> Success                                        */
+/*      BIA_MEM_ALLOC -> Memory allocation error                        */
 /*                                                                      */
 
-int EulerMejorado(biaDataRK *ptData)
+int improvedEulerRungeKuttaCoefs(biaDataRK *ptData) {
 
-{
-/* FUNCION QUE INICIALIZA LOS COEFICIENTES PARA UTILIZAR EL METODO
-   DE "EULER MEJORADO" PARA LA RESOLUCION NUMERICA DE E.D.O's */
+  ptData->strCoefs.intStages = 2; /* method stages */
 
-int 	intEtapas = 2;	/* NUMERO DE ETAPAS DEL METODO */
+  ptData->intImplicit = BIA_IMPLICIT_RK_FALSE; /* explicit method */
 
-/* RESERVA DE MEMORIA */
+  /* free pointers if necessary */
+  if ( ptData->strCoefs.dblC != NULL )
+    free(ptData->strCoefs.dblC)
 
-ptstrDatos->strCoefi.dblC = (double *)dblPtAsigMemVec(intEtapas);
+  if ( ptData->strCoefs.dblB != NULL )
+    free(ptData->strCoefs.dblB)
 
-if ( ptstrDatos->strCoefi.dblC == NULL )
-	{
-	return (ERR_AMEM);	/* FIN */
-	}
+  if ( ptData->strCoefs.dblMatrix != NULL )
+    freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
 
-ptstrDatos->strCoefi.dblB = (double *)dblPtAsigMemVec(intEtapas);
+  /* memory reservation */
+  ptData->strCoefs.dblC = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblC == NULL )
+    return (BIA_MEM_ALLOC);
 
-if ( ptstrDatos->strCoefi.dblB == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblC);
+  ptData->strCoefs.dblB = (double *)dblPtMemAllocVec(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblB == NULL ) {
+        free(ptData->strCoefs.dblC);
+        return (BIA_MEM_ALLOC);
+        }
 
-	return (ERR_AMEM);	/* FIN */
-	}
+  ptData->strCoefs.dblMatrix = (double **)dblPtMemAllocLowerTrMat(ptData->strCoefs.intStages);
+  if ( ptData->strCoefs.dblMatrix == NULL ) {
+        free(ptData->strCoefs.dblB);
+        free(ptData->strCoefs.dblC);
+        freeMemDblMat(ptData->strCoefs.dblMatrix, ptData->strCoefs.intStages);
+        return (BIA_MEM_ALLOC);
+        }
 
-ptstrDatos->strCoefi.dblMatriz = (double **)dblPtAsigMemMatTrInf(intEtapas);
+  /* b[i] coefs */
+  ptData->strCoefs.dblB[0] = 1./2.;
+  ptData->strCoefs.dblB[1] = 1./2.;
 
-if ( ptstrDatos->strCoefi.dblMatriz == NULL )
-	{
-	free(ptstrDatos->strCoefi.dblB);
-	free(ptstrDatos->strCoefi.dblC);
-	FreeMemDblMat(ptstrDatos->strCoefi.dblMatriz, intEtapas);
+  /* c[i] coefs */
+  ptData->strCoefs.dblC[0] = .0;
+  ptData->strCoefs.dblC[1] = 1.;
 
-	return(ERR_AMEM);	/* FIN */
-	}
+  /* a[i][j] coefs */
+  ptData->strCoefs.dblMatrix[0][0] = .0;
 
-/* NUMERO DE ETAPAS DEL METODO */
+  ptData->strCoefs.dblMatrix[1][0] = 1.;
+  ptData->strCoefs.dblMatrix[1][1] = .0;
 
-ptstrDatos->strCoefi.intEtapas = intEtapas;
-
-/* ESTE METODO ES UN METODO EXPLICITO */
-
-ptstrDatos->intImplicito = FALSE;
-
-/* COEFICIENTES b[i] */
-
-ptstrDatos->strCoefi.dblB[0] = 1./2.;
-ptstrDatos->strCoefi.dblB[1] = 1./2.;
-
-/* COEFICIENTES c[i] */
-
-ptstrDatos->strCoefi.dblC[0] = .0;
-ptstrDatos->strCoefi.dblC[1] = 1.;
-
-/* COEFICIENTES a[i][j] */
-
-ptstrDatos->strCoefi.dblMatriz[0][0] = .0;
-
-ptstrDatos->strCoefi.dblMatriz[1][0] = 1.;
-ptstrDatos->strCoefi.dblMatriz[1][1] = .0;
-
-return (TRUE);
+  return (BIA_TRUE);
 }
