@@ -1,0 +1,186 @@
+%
+% roots.h
+%
+
+\chapter{Roots approximation (roots.h)} \label{sec:roots}
+
+\section{Introduction}
+
+Functions to compute function's roots approximation are defined in \texttt{roots.h} file.
+
+\section{Data structures}
+
+Some data structures are defined in \BI to manage roots.
+
+\subsection{\texttt{biaRealRoot} data structure} \label{sec:biaRealRoot}
+
+This data structure is used to store data for root approximation.\\
+
+Data structure is defined in figure \ref{fig:biaRealRoot} where:
+%
+\begin{description}
+\item[intNMI] maximum number of iterations to get the root with a maximum error of \texttt{dblTol}.
+\item[intIte] iterations used to get the root.
+\item[dblx0] initial approximation to get the root.
+\item[dblRoot] root approximation.
+\item[dblTol] maximum tolerance when calculating the root.
+\item[dblError] error in root approximation. Difference between the las two root approximations.
+\end{description}
+%
+\begin{figure}[!h]
+\begin{verbatim}
+typedef struct {
+  int intNMI,
+      intIte;
+
+  double dblx0,
+         dblRoot,
+         dblTol,
+         dblError;
+  } biaRealRoot;
+\end{verbatim}
+\caption{biaRealRoot data structure.} \label{fig:biaRealRoot}
+\end{figure}
+
+\FloatBarrier
+
+\section{Function roots approximation}
+
+\subsection{\texttt{newtonPol} function}
+
+This function approaches a polynomial root using the \textbf{Newton} method.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int newtonPol(biaPol *ptPol, biaRealRoot *ptRoot);  
+\end{verbatim}
+%
+The following codes are returned:
+%
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_MEM\_ALLOC} & Memory allocation error \\
+\hline
+\textbf{BIA\_ZERO\_DIV} & Division by zero \\
+\hline
+\textbf{BIA\_TRUE} & the root was computed satisfying the problem \\
+                   & conditions (\texttt{intMNI} and \texttt{dblTol}); \\
+\hline
+\textbf{BIA\_FALSE} & Root approximation could not be calculated \\
+                    & satisfying the requirements (\texttt{intMNI} and \texttt{dblTol}). \\
+\hline
+\end{tabular}
+\end{center}
+%
+The following values in \texttt{*ptRoot} need to be initialized:
+%
+\begin{description}
+\item[intMNI] maximun number of iterations to compute the root.
+\item[dblx0] initial approximation.
+\item[dblTol] tolerance to compute de root.
+\end{description}
+%
+The following data will be stored:
+%
+\begin{description}
+\item[intIte] iterations used to compute the root.
+\item[dblRoot] approximation of the root.
+\item[dblError] error in the approximation.
+\end{description}
+%
+\note{When two consecutive approximations are close enough, \texttt{dblTol}, last approximation will be considered as good and will be stored in \texttt{*biaRealRoot *ptRoot} in \texttt{dblRoot}.}
+%
+
+\subsection{\texttt{newtonMethod} function}
+
+This function approaches a function's root using the \textbf{Newton} method.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int newtonMethod(biaRealRoot *ptRoot, 
+       int (*func)(double dblx0, double *ptRes),
+       int (*der)(double dblx0, double *ptRes));  
+\end{verbatim}
+%
+Function's pointers are used to avoid having to recode the C function every time a root function need to be approximated for different mathematical functions.\\ \\
+%
+The following codes are returned:
+%
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_ZERO\_DIV} & Division by zero \\
+\hline
+\textbf{BIA\_TRUE} & the root was computed satisfying the problem \\
+                   & conditions (\texttt{intMNI} and \texttt{dblTol}); \\
+\hline
+\textbf{BIA\_FALSE} & Root approximation could not be calculated \\
+                    & satisfying the requirements (\texttt{intMNI} and \texttt{dblTol}). \\
+\hline
+\end{tabular}
+\end{center}
+%
+where:
+%
+\begin{description}
+\item[*ptRoot] is a pointer to a \texttt{biaRealRoot} variable.
+\item[*func] pointer to a function implementing the function which root is going to be computed.
+\item[*der] pointer to a function implementing the derivative of the function which root is going to be computed.
+\end{description}
+%
+The following values in \texttt{*ptRoot} need to be initialized:
+%
+\begin{description}
+\item[intMNI] maximun number of iterations to compute the root.
+\item[dblx0] initial approximation.
+\item[dblTol] tolerance to compute de root.
+\end{description}
+%
+The following data is stored:
+%
+\begin{description}
+\item[intIte] iterations used to compute the root.
+\item[dblRoot] approximation of the root.
+\item[dblError] error in the approximation.
+\end{description}
+%
+\note{When two consecutive approximations are close enough, \texttt{dblTol}, last approximation will be considered as good and will be stored in \texttt{*biaRealRoot *ptRoot} in \texttt{dblRoot}.}
+
+\subsection{Usage example}
+
+To approximate a root for the function $f(x) = \sqrt{2}$ to C functions need to be created. A C function for the mathematical function implementation:
+%
+\begin{verbatim}
+/* f(x) = x^2 - 2 */
+int myfunc(double x0, double *fx0) {
+  *fx0 = (double)(x0 * x0 - 2.);
+  return BIA_TRUE;
+}  
+\end{verbatim}
+%
+A C function for the mathematical derivative function implementation:
+%
+\begin{verbatim}
+/* f'(x) = 2*x */
+int myfuncder(double x0, double *fx0) {
+  *fx0 = 2.*x0;
+  return BIA_TRUE;
+}  
+\end{verbatim}
+%
+Both functions must meet the following requirements:
+%
+\begin{itemize}
+\item An integer value is returned, \textbf{BIA\_TRUE} when function is evaluated in $x0$ and \textbf{BIA\_ZERO\_DIV} if a division by zero takes place.
+\item $x0$ value to evaluate the function.
+\item $*fx0$ pointer to a double to store the function's value in $x0$.
+\end{itemize}
+%
+So to approximate function's root using Newton Method:
+%
+\begin{verbatim}
+i = newtonMethod(&myRoot, &myfunc, &myfuncder);  
+\end{verbatim}

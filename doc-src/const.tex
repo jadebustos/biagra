@@ -1,0 +1,50 @@
+%
+% const.h
+%
+
+\chapter{B.I.A.G.R.A constants (const.h)} \label{ch:mathematicalConsts}
+
+\section{Introduction}
+
+\BI \ includes its own constants to be used if needed.\\
+
+These constants are defined in \texttt{const.h}.
+
+\section{Mathematical constants} \label{sec:mathematicalConsts}
+
+Table \ref{tab:mathematicalConsts} shows the \BI's mathematical constanst.
+
+\begin{table}[!h]
+  \begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Constant} & \textbf{Name} & \textbf{Value} \\
+    \hline
+    $\texttt{e}$ & \texttt{BIA\_E} & $2.71828182845904523536029$ \\
+    \hline
+    $\pi$ & \texttt{BIA\_PI} & 3.14159265358979323846264 \\
+    \hline
+  \end{tabular}
+  \end{center}
+\caption{\BI\ mathematical constants.} \label{tab:mathematicalConsts}
+\end{table}
+
+\FloatBarrier
+
+\section{Logical constants}
+
+The following logical constants are defined:
+
+\begin{description}
+\item[BIA\_FALSE] when a condition is not met.
+\item[BIA\_TRUE] when a condiction is met.
+\end{description}
+
+\section{Error constants}
+
+The following error constants are defined:
+
+\begin{description}
+\item[BIA\_ZERO\_DIV] division by zero.
+\item[BIA\_MEM\_ALLOC] error in memory allocation.
+\end{description}

@@ -1,0 +1,302 @@
+%
+% complex.h
+%
+
+\chapter{Complex numbers (complejo.h)}
+
+\section{Introduction}
+
+Functions to manage complex numbers are defined in \texttt{complex.h} file.
+
+\section{Data structures}
+
+Some data structures are defined in \BI \ to manage complex numbers.
+
+\subsection{\texttt{biaComplex} data structure} \label{sec:biaComplex}
+
+This data structure is used to handle polinomials $p(x) \in \mathbb{R}[x]$. \textbf{biaComplex} data structure is defined in figure \ref{fig:biaRealPol} where:
+
+\begin{description}
+\item[intDegree] polynomial degree.
+\item[intRealRoots] number of real roots (if any).
+\item[intCompRoots] number of complex roots (if any).
+\item[*dblCoef] pointer to store polynomial coeficients.
+\end{description}
+
+\begin{figure}[!h]
+\begin{verbatim}
+typedef struct {
+  double dblReal,
+         dblImag;
+  } biaComplex;
+\end{verbatim}
+\caption{biaComplex data structure.} \label{fig:biaComplex}
+\end{figure}
+
+\subsection{\texttt{biaPolar} data structure} \label{sec:biaPolar}
+
+This data structure is used to store data for root approximation. Data structure is defined in figure \ref{fig:biaRealRoot} where:
+
+\begin{description}
+\item[intNMI] maximum number of iterations to get the root with a maximum error of \emph{dblTol}.
+\item[intIte] iterations used to get the root.
+\item[dblx0] initial approximation to get the root.
+\item[dblRoot] root approximation.
+\item[dblTol] maximum tolerance when calculating the root.
+\item[dblError] error in root approximation. Difference between the las two root approximations.
+\end{description}
+
+\begin{figure}[!h]
+\begin{verbatim}
+typedef struct {
+  double dblMod,
+         dblArg;
+  } biaPolar;
+\end{verbatim}
+\caption{biaPolar data structure.} \label{fig:biaPolar}
+\end{figure}
+
+\FloatBarrier
+
+\section{Arithmetical operations using complex numbers}
+
+\subsection{\texttt{addComplex} function}
+
+This function adds two complex numbers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+void addComplex(biaComplex *ptCmplx1, biaComplex *ptCmplx2, 
+                biaComplex *ptRes);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx1] first complex number to be added.
+\item[*ptCmplx2] second complex number to be added.
+\item[*ptRes] result of the operation.
+\end{description}
+
+\subsection{\texttt{subtractComplex} function}
+
+This function subtracts two complex numbers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+void subtractComplex(biaComplex *ptCmplx1, biaComplex *ptCmplx2, 
+                     biaComplex *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx1] complex number.
+\item[*ptCmplx2] complex number to be subtracted to the above.
+\item[*ptRes] result of the operation.
+\end{description}
+
+\subsection{\texttt{multiplyComplex} function}
+
+This function multiplies two complex numbers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+void multiplyComplex(biaComplex *ptCmplx1, biaComplex *ptCmplx2, 
+                     biaComplex *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[ptCmplx1] first complex number to be multiplied. 
+\item[ptCmplx2] second complex number to be multiplied.
+\item[ptRes] result of the operation.
+\end{description}
+
+\subsection{\texttt{divideComplex} function}
+
+This function divides one complex number by other:
+%
+\begin{displaymath}
+\frac{\mathrm{a} + \mathrm{b} \cdot i}{\mathrm{c} + \mathrm{d} \cdot i} = (\mathrm{a} + \mathrm{b} \cdot i) \cdot (\mathrm{c} + \mathrm{d} \cdot i)^{-1}  
+\end{displaymath}
+
+The definition of this function:
+%
+\begin{verbatim}
+int divideComplex(biaComplex *ptCmplx1, biaComplex *ptCmplx2, 
+                  biaComplex *ptRes);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx1] complex number.
+\item[*ptCmplx2] complex number used as divisor. 
+\item[*ptRes] result of the operation.
+\end{description}
+%
+The following codes are returned:
+%
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_ZERO\_DIV} & Division by zero \\
+\hline
+\textbf{BIA\_TRUE} & Success \\
+\hline
+\end{tabular}
+\end{center} 
+
+\subsection{\texttt{invSumComplex} function}
+
+This function gets the additive inverse of a complex number:
+%
+\begin{displaymath}
+\forall \ \ z_1 \in \mathbb{C} \quad \exists \ \ z_2 \in \mathbb{C} \ \ | \ \ z_1 + z_2 = 0
+\end{displaymath}
+
+The definition of this function:
+%
+\begin{verbatim}
+void invSumComplex(biaComplex *ptCmplx, biaComplex *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx] complex number to get its additive inverse.
+\item[*ptRes] where the additive inverse will be stored.
+\end{description}
+
+\subsection{\texttt{invMulComplex} function}
+
+This function gets the multiplicative inverse of a complex number:
+%
+\begin{displaymath}
+\forall \ \ z_1 \in \mathbb{C} - \{0\} = \mathbb{C}^{*} \quad \exists \ \ z_2 \in \mathbb{C} \ \ | \ \ z_1 \cdot z_2 = 1
+\end{displaymath}
+
+The definition of this function:
+%
+\begin{verbatim}
+int invMulComplex(biaComplex *ptCmplx, biaComplex *ptRes) ;  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx] complex number to get its multiplicative inverse.
+\item[*ptRes] where the additive multiplicative will be stored.
+\end{description}
+
+The following codes are returned:
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_ZERO\_DIV} & Division by zero \\
+\hline
+\textbf{BIA\_TRUE} & Success \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Complex number operations}
+
+\subsection{\texttt{dblComplexModulus} function}
+
+This function gets the modulus of a complex number.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double dblComplexModule(biaComplex *ptCmplx);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx] complex number to get its modulus.
+\end{description}
+%
+This function returns the complex number modulus.
+
+\subsection{\texttt{dblComplexArg} function}
+
+This function gets the argument of a complex number.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double dblComplexArg(biaComplex *ptCmplx);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx] complex number to get its argument.
+\end{description}
+%
+This function returns the complex number argument (radians).
+
+\subsection{\texttt{conjugateComplex} function}
+
+This function gets the conjugate complex of a complex number:
+%
+\begin{displaymath}
+z = \textrm{a} + \textrm{b} \cdot i \ \ \in \mathbb{C} \Rightarrow \overline{z} = \textrm{a} - \textrm{b} \cdot i \ \ \in \mathbb{C}
+\end{displaymath}
+%
+The definition of this function:
+%
+\begin{verbatim}
+void conjugateComplex(biaComplex *ptCmplx, biaComplex *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx] complex number to get its conjugate.
+\item[*ptRes] complex conjugate.
+\end{description}
+
+\subsection{\texttt{complex2Polar} function}
+
+This function gets the polar coordinates of a complex number.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+void complex2Polar(biaComplex *ptCmplx, biaPolar *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptCmplx] complex number to calculate polar coordinates.
+\item[*ptRes] polar coordinates.
+\end{description}
+
+\subsection{\texttt{polar2Complex} function}
+
+This function gets the cartesian coordinates of a polar coordinates for a complex number.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+void polar2Complex(biaPolar *ptPolar, biaComplex *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptPolar] polar coordinates.
+\item[*ptRes] complex number in cartesian coordinates.
+\end{description}
+
+\note{Argument is supposed to be in radians.}

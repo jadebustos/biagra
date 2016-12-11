@@ -1,0 +1,109 @@
+%
+% random.h
+%
+
+\chapter{Pseudo random numbers (random.h)} \label{ch:random}
+
+\section{Introduction}
+
+\BI \ includes its own functions to pseudo random number generation and they are defined in \texttt{random.h} file.\\
+
+\warning{This functions have not been tested to produce unpredictable sequences, so be careful when use them.}
+
+\section{Pseudo random integer numbers}
+
+\subsection{\texttt{intRandom} function} \label{sec:intRandom}
+
+This function generates random integers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+int intRandom(int limit);  
+\end{verbatim}
+%
+The pseudo random integer is placed in the interval $(-limit,limit)$.\\ \\
+%
+\note{Before using this function \texttt{srand} must be used to initialize \texttt{rand}. You can use \texttt{srand((unsigned)time(NULL))}.}
+%
+\ \\
+%
+The pseudo random number is generated with the following formula:
+%
+\begin{displaymath}
+\left[ \frac{limit \cdot rand()}{RAND\_MAX + 1} \right] \in (-limit,limit)
+\end{displaymath}
+%
+Then randomly is choosed if the number is positive or negative using the above formula with $limit=2$ and then taking modulus $2$. If modulus is $1$ then the number will be a negative one.
+
+\subsection{\texttt{uintRandom} function} \label{sec:uintRandom}
+
+This function generates random integers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+int uintRandom(int limit);  
+\end{verbatim}
+%
+The pseudo random integer is placed in the interval $[0,limit)$.\\ \\
+%
+\note{Before using this function \texttt{srand} must be used to initialize \texttt{rand}. You can use \texttt{srand((unsigned)time(NULL))}.}
+%
+\ \\
+%
+The pseudo random number is generated with the following formula:
+%
+\begin{displaymath}
+\left[ \frac{limit \cdot rand()}{RAND\_MAX + 1} \right] \in [0,limit)
+\end{displaymath}
+%
+
+\section{Pseudo random floating point numbers}
+
+\subsection{\texttt{dblRandom} function} \label{sec:dblRandom}
+
+This function generates random floating point numbers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+int dblRandom(int limit);  
+\end{verbatim}
+%
+The pseudo random floating point number is placed in the interval $(-limit,limit)$.\\ \\
+%
+\note{Before using this function \texttt{srand} must be used to initialize \texttt{rand}. You can use \texttt{srand((unsigned)time(NULL))}.}
+%
+\ \\
+%
+The pseudo random number is generated with the following formula:
+%
+\begin{displaymath}
+\frac{limit \cdot rand()}{RAND\_MAX + 1} \in (-limit,limit)
+\end{displaymath}
+%
+Then randomly is choosed if the number is positive or negative using the above formula with $limit=2$ and then taking modulus $2$. If modulus is $1$ then the number will be a negative one.
+
+\subsection{\texttt{udblRandom} function} \label{sec:udblRandom}
+
+This function generates random floating point numbers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+int udblRandom(int limit);  
+\end{verbatim}
+%
+The pseudo random floating point number is placed in the interval $[0,limit)$.\\ \\
+%
+\note{Before using this function \texttt{srand} must be used to initialize \texttt{rand}. You can use \texttt{srand((unsigned)time(NULL))}.}
+%
+\ \\
+%
+The pseudo random number is generated with the following formula:
+%
+\begin{displaymath}
+\frac{limit \cdot rand()}{RAND\_MAX + 1} \in [0,limit)
+\end{displaymath}
+%

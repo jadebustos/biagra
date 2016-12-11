@@ -1,0 +1,164 @@
+\documentclass[a4paper,12pt,twoside,openright]{report}
+
+%\addtolength{\voffset}{-4cm}
+\usepackage[english]{babel}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+\usepackage{amssymb}
+\usepackage{draftwatermark}
+\usepackage{placeins}
+\usepackage{balloons}
+\usepackage{fancyhdr}
+
+%\pagestyle{headings}
+
+\fancyhf{}
+\pagestyle{fancy}
+\fancyhead [L] {Scientific programming library} %Encabezado
+\fancyhead [R]{Version \ver}
+\fancyfoot[R]{\thepage} %Pie de página
+\fancyfoot[L]{\BI}
+
+
+\SetWatermarkText{Draft}
+\SetWatermarkScale{5}
+\SetWatermarkColor{blue}
+
+\author{Jos\'e Angel de Bustos P\'erez}
+
+\newcommand{\BI}{\emph{B.I.A.G.R.A} }
+\newcommand{\ver}{1.0}
+\newcommand{\me}
+	{\emph{Jos\'e Angel de Bustos P\'erez}}
+
+\frenchspacing
+
+\hyphenation{si-guien-te apro-xi-ma-cio-nes FORTRAN double intGrado 
+dblDerivada dblResultado intNMI intOrden dblMatriz Newton intResultado
+cabezera coor-de-na-das de-pen-dien-do di-men-sio-na-do re-pre-sen-tan-do par-ti-cu-lar a-ppro-xi-ma-tion me-mo-ry po-ly-no-mials e-ve-ry}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\textbf{
+\begin{center}
+\Huge{B.I.A.G.R.A.} \\[.75cm]
+%\end{center}
+\LARGE BI\Large bliotec\LARGE A \Large de pro\LARGE GR\Large amaci\'on 
+cient\'{\i}fic\LARGE A\\[5cm]
+\end{center}
+}
+
+\large 
+\begin{flushright}
+\me \\
+$<$jadebustos@gmail.com$>$\\ \ \\ 
+Version \ver, \today .\\
+\textbf{\LaTeXe}
+\end{flushright}
+
+\normalsize
+
+\tableofcontents
+
+\part{Introduction}
+
+%
+% INTRODUCTION
+%
+
+\include{intro}
+
+%
+% COMO UTILIZAR BIAGRA
+%
+
+\include{como}
+
+\part{B.I.A.G.R.A Data structures and constants}
+
+%
+% const.h
+%
+
+\include{const}
+
+%
+% dataaprox.h
+%
+
+\include{dataaprox}
+
+\part{Memory allocation}
+
+%
+% resmem.h
+%
+
+\include{resmem}
+
+%
+% MATHEMATICAL FUNCTIONS
+%
+
+\part{Mathematical functions}
+
+%
+% random.h
+%
+
+\include{random}
+
+%
+% complex.h
+%
+
+\include{complex}
+
+%
+% integers.h
+%
+
+\include{integers}
+
+%
+% poliynomial.h
+%
+
+\include{polynomial}
+
+%
+% matrix.h
+%
+
+\include{matrix}
+
+%
+% roots.h
+%
+
+\include{roots}
+
+%
+% RNGKUTTA.H
+%
+
+\include{rngkutta}
+
+%%%%%%%%%%%%%
+% Apendices %
+%%%%%%%%%%%%%
+
+\appendix
+
+%
+% Apendice sobre metodos Runge - Kutta 
+%
+
+\include{aprk}
+
+\end{document}

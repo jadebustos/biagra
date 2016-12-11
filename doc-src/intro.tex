@@ -1,0 +1,157 @@
+%
+% What is B.I.A.G.R.A?
+%
+
+\chapter{What is \BI?}
+
+\begin{itemize}
+
+\item \BI stands for \textbf{BI}\emph{bliotec}\textbf{A} \emph{de pro}\textbf{GR}\emph{amaci\'on cient\'{\i}fic}\textbf{A} which means Scientific Programming Library.
+\item \BI is enterely coded using \textbf{C} language.
+\item \BI has been developed and tested under \emph{LiNUX}.
+\item \BI is distribuded as open source and its author does not take any responibility.
+\item I wrote \BI in the 90s to help me with some subjects in my degree.
+
+\end{itemize}
+
+\section{C language?}
+
+\textbf{C} language instead of \textbf{FORTRAN}?
+%
+\begin{itemize}
+\item \textbf{C} is modular and structured.
+\item \textbf{C} is a general purpose language programming.
+\item \textbf{C} is a very powerful language and its code is very fast.
+\item \textbf{C} allows dynamic memory allocation.
+\item \textbf{C} code is portable.
+\item \textbf{C} is able to handle graphic modes. 
+\end{itemize}
+
+\section{Some general ideas about \BI}
+
+\BI\ has been developed under \textbf{Linux} and some \textbf{Linux} knowledge is needed.\\
+
+\BI\ was developed to solve general problems instead of particular ones. For instance, instead of writing a program to get the inverse of a 4x4 matrix and having to change the source code to get the inverse of a 5x5 matrix \BI\ was developed to allow to write programs to get the inverse of any matrix without having to change de sorce code.\\
+
+To be able to do that \emph{pointers} were used instead of using \emph{arrays}.\\
+
+When we talk about \emph{vectors} we will be talking about a \emph{pointer} using dynamic memory allocation. When we talk about matrices we will be talking about \emph{pointer} to a \emph{pointer} using dynamic memory allocation.\\
+
+\BI\ uses some data structures to store data.\\
+
+For common errors as:
+
+\begin{itemize}
+\item Errors in dynamic memory allocation.
+\item Division by zero.
+\item \ldots
+\end{itemize}
+
+\BI\ uses its own constants to notify these errors (Chapter \ref{ch:mathematicalConsts}).\\
+
+Cuando una funci\'on devuelva un dato, que no sea un c\'odigo que indique
+el estado en el que se termin\'o la ejecuci\'on de la funci\'on, se indicar\'a 
+anteponiendo un prefijo al nombre de la funci\'on, el cual indicar\'a que tipo
+de dato devuelve, por ejemplo:
+
+\begin{enumerate}
+\item \emph{double dblFuncion(\ldots)} funci\'on que devuelve un dato de
+      tipo \emph{double}.
+\item \emph{int intFuncion(\ldots)} funci\'on que devuelve un dato de tipo
+      \emph{int}.
+\item \emph{double *dblPtFuncion(\ldots)} funci\'on que devuelve un dato de
+      tipo puntero a \emph{double}.
+\item \emph{void Funcion(\ldots)} funci\'on que no devuelve ning\'un dato.
+\end{enumerate}
+
+\newpage
+
+\section{C\'odigos devueltos por las funciones}
+
+No es obligatorio que las funciones devuelvan un valor.\newline
+Cuando una funci\'on devuelva un valor ser\'a por dos razones:
+
+\begin{itemize}
+\item Para devolver el resultado de una operaci\'on.
+\item Para informar de como termin\'o una operaci\'on.
+\end{itemize} 
+
+Es este \'ultimo caso el que nos incumbe.\newline
+
+Cuando una funci\'on devuelva un dato indicando como termin\'o una
+determinada operaci\'on, este dato ser\'a, necesariamente, un entero y los
+c\'odigos devueltos los podemos ver en la p\'agina \pageref{sec:tiposdecodigos}.
+
+\section{Como instalar \BI en LiNUX}
+Para instalar \BI lo primero que hay que hacer es entrar en el sistema
+como \textbf{root} y situarse en el directorio donde esten los fuentes
+de la biblioteca.
+
+\subsection{Intalaci\'on de la biblioteca \BI est\'atica}
+Para instalar este tipo bibilioteca se puede hacer de dos formas:
+
+\begin{enumerate}
+\item \emph{./instalar estatica}
+\item \emph{make estatica}
+\end{enumerate}
+
+En realidad ambas hacen lo mismo, la opci\'on con \emph{make} en realidad 
+ejecuta \emph{./instalar estatica}.\newline
+
+Al realizar cualquiera de estas dos opciones se copiar\'an los ficheros
+cabezera a \emph{\textbf{/usr/include/biagra}} y a continuaci\'on se crear\'a la
+biblioteca\\ \emph{\textbf{/usr/lib/libbiagra.a}}.\newline
+
+Luego si se utiliza una funci\'on de esta biblioteca, cuyo prototipo est\'a en 
+el fichero de cabecera \emph{rngkutta.h} habr\'a que incluir en las directivas 
+al prepocesador \textbf{\#include $<$biagra/rngkutta.h$>$}.
+
+\newpage
+
+\subsection{Intalaci\'on de la biblioteca \BI din\'amica ELF}
+
+\subsection{Instalaci\'on de ambas bibliotecas}
+Para instalar la biblioteca \BI en su forma est\'atica y din\'amica ELF:
+
+\begin{center}
+\emph{make todo}
+\end{center}
+
+Esto lo que hace es ejecutar primero
+
+\begin{center}
+\emph{./instalar estatica}
+\end{center}
+
+lo cual instalar\'a la biblioteca est\'atica, y luego 
+
+\begin{center}
+\emph{./instalar elf}
+\end{center}
+
+lo cual instalar\'a la biblioteca din\'amica ELF.
+
+\section{Como utilizar \BI en LiNUX}
+\BI es una biblioteca para programaci\'on cient\'{\i}fica, 
+desarrollada para ser usada en programas escritos en \textbf{C}, se
+distribuye en varios formatos:
+
+\begin{description}
+\item[Biblioteca est\'atica]
+\item[Biblioteca din\'amica ELF]
+\end{description}
+
+\subsection{Biblioteca est\'atica}
+Para el uso de esta biblioteca hay que indicarle al \emph{montador} que
+biblioteca debe \emph{enlazar}.
+Por ejemplo, supongamos que hemos escrito un programa para resolver una
+ecuaci\'on diferencial por un m\'etodo \emph{Runge-Kutta} y hemos utilizado
+funciones cuyos prototipos estan en \textbf{edo.h} y \textbf{rngkutta.h}, si
+nuestro programa es \mbox{\emph{programa.c}}, para crear el ejecutable:
+
+\begin{center}
+\emph{gcc programa.c -o programa -l\textbf{biagra} -l\textbf{m}\footnote{\BI 
+utiliza la biblioteca estandar matem\'atica.}} 
+\end{center}
+
+\subsection{Biblioteca din\'amica ELF}

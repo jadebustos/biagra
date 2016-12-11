@@ -1,0 +1,147 @@
+%
+% Apendice sobre metodos Runge - Kutta 
+%
+
+\chapter{Runge-Kutta methods} \label{sec:Runge}
+
+This appendix is intended to help to know how Runge-Kutta methods are implemented and used in this library.
+
+\section{What is a Runge-Kutta method?}
+
+\textbf{Runge-Kutta} methods are a family of numerical methods to approach solutions of ordinary differential equations (O.D.E). These methods are iterative methods used to solve ``\emph{initial problem value}'' (\textbf{I.P.V}) or ``\emph{Cauchy problem}''.\\
+
+These methods are only-one-step methods with a fixed size for the method step\footnote{It is also possible to implement methods with a variable step known as \emph{embedding}.}.\\
+
+\subsection{What is a I.V.P.?}
+
+An \emph{I.V.P.} is:
+
+\begin{equation} \label{eq:IVP}
+\left\{ \begin{array}{l}
+y' = f(x, y(x))\\
+y(x_0) = y_0\\
+\end{array} \right.
+\end{equation}
+%
+So $y'$ is a function depending on the variable $x$, and the function $y(x)$. $y(x)$ is the solution of the equation \ref{eq:IVP} and the point $(x_0,y_0)$ belongs to the curve $y(x)$.\\
+
+Solving the \emph{I.V.P.} \ref{eq:IVP} is finding a function $y(x)$ such as the equation \ref{eq:IVP} is met.\\
+
+An example of a \emph{I.V.P.}:
+%
+\begin{equation} \label{eq:IVPej}
+\left\{ \begin{array}{l}
+y' = \frac{x * y(x) - y(x)^2}{x^2} \\
+y(1) = 2 \\
+\end{array} \right.
+\end{equation}
+%
+The solution of the \ref{eq:IVPej} will be:
+%
+\begin{equation}
+y(x) = \frac{x}{\frac{1}{2}+\ln x}
+\end{equation}
+
+\section{Runge-Kutta's method notation}
+
+$y(x_i)$ will be the exact value of the function $y(x)$ evaluated in $x_i$.\\ \\
+$y_i$ will be the approximation of the function $y(x)$ in the point $x_i$.\\ \\
+$h$ is the step used by the method in each iteration.
+
+\subsection{General formulation}
+
+A $s$-stages \textbf{Runge-Kutta}'s method formulation is:
+%
+\begin{equation}
+y_{n+1} = y_{n} + h \cdot \sum_{i=0}^{s-1} b_i \cdot k_i
+\end{equation}
+%
+where:
+%
+\begin{equation}
+k_i = f(x_n + c_i \cdot h, y_n + h \cdot \sum_{j=0}^{s-1} a_{i,j} \cdot k_j)
+\end{equation}
+%
+satisfying:
+%
+\begin{equation}
+\sum_{j=0}^{s-1} a_{i,j} = c_i
+\end{equation}
+
+\subsection{Matricial notation (Butcher's)}
+
+Matricial notation is used to represent method's coeficients using a matrix.\\
+
+For a $s$-stages \textbf{Runge-Kutta} method the matricial notation will be:
+%
+\begin{center}
+\begin{displaymath}
+\begin{array}{c|ccc}
+c_0 & a_{0,0} & \cdots \cdots & a_{0,s-1} \\
+\vdots & \vdots & & \vdots \\
+\vdots & \vdots & & \vdots \\
+c_{s-1} & a_{s-1,0} & \cdots \cdots & a_{s-1,s-1} \\
+\hline
+ & b_0 & \cdots \cdots & b_{s-1} \\
+\end{array}
+\end{displaymath}
+\end{center}
+
+\note{In section \ref{sec:biaButcherArray} is shown a data structure used to store the Butcher array.}
+
+\section{Runge-Kutta types}
+
+There are several types of \textbf{Runge-Kutta} methods.
+
+\subsection{Implicit Runge-Kutta}
+
+A \textbf{Runge-Kutta} method is said to be implicit when the $a_{i,j} \neq 0$ for some $j > i$.\\
+
+The $2$-stages Gauss method is an implicit \textbf{Runge-Kutta} method of $2$-stages:
+%
+\begin{center}
+\begin{displaymath}
+\begin{array}{c|cc}
+\frac{3-\sqrt 3}{6} & \frac{1}{4} & \frac{3-2*\sqrt 3}{12} \\
+\frac{3+\sqrt 3}{6} & \frac{3+2*\sqrt 3}{12} &\frac{1}{4} \\
+\hline
+ & \frac{1}{2} & \frac{1}{2}
+\end{array}
+\end{displaymath}
+\end{center}
+
+\subsection{Semi-implicit Runge-Kutta}
+
+A \textbf{Runge-Kutta} method is said to be semi-implicit when the $a_{i,j} = 0$ when $j > i$.\\
+
+A $2$-stages semi-implicit \textbf{Runge-Kutta} method:
+%
+\begin{center}
+\begin{displaymath}
+\begin{array}{c|cc}
+\frac{3+\sqrt 3}{6} & \frac{3+\sqrt 3}{6} & 0 \\
+\frac{3-\sqrt 3}{6} & \frac{-\sqrt 3}{3} & \frac {3+\sqrt 3}{6} \\
+\hline
+ & \frac{1}{2} & \frac{1}{2}
+\end{array}
+\end{displaymath}
+\end{center}
+
+\subsection{Explicit Runge-Kutta}
+
+A \textbf{Runge-Kutta} method is said to be explicit when the $a_{i,j} = 0$ when $j \geq i$.\\
+
+A $4$-stages explicit \textbf{Runge-Kutta} method also known as ``\textbf{classic Runge-Kutta}'':
+%
+\begin{center}
+\begin{displaymath}
+\begin{array}{c|cccc}
+0 & 0 \\
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & \frac{1}{2} & 0 \\
+1 & 0 & 0 & 1 & 0 \\
+\hline
+ & \frac{1}{6} & \frac{1}{3} & \frac{1}{3} & \frac{1}{6}
+\end{array}
+\end{displaymath}
+\end{center}

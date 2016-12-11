@@ -1,0 +1,184 @@
+%
+% resmem.h
+%
+
+\chapter{Memory allocation (resmem.h)}
+
+\section{Introduction}
+
+\BI\ includes its own memory allocation functions which are defined in \texttt{resmem.h} file.
+
+\section{Vector's memory allocation}
+
+Some functions are provided to handle memory allocations for vectors.
+
+\subsection{\texttt{intPtMemAllocVec} function} \label{sec:intPtMemAllocVec}
+
+This functions allocates memory for a vector of int.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double *intPtMemAllocVec(int intElements);  
+\end{verbatim}
+%
+This function has only one argument, \texttt{intElements}, which is the dimension of the vector and a \texttt{int} pointer is returned.
+
+\subsection{\texttt{dblPtMemAllocVec} function} \label{sec:dblPtMemAllocVec}
+
+This functions allocates memory for a vector of doubles.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double *dblPtMemAllocVec(int intElements);  
+\end{verbatim}
+%
+This function has only one argument, \texttt{intElements}, which is the dimension of the vector and a \texttt{double} pointer is returned.
+
+\section{Matrix memory allocation}
+
+Some functions are provided to handle memory allocations for vectors.
+
+\subsection{\texttt{dblPtMemAllocMat} function} \label{sec:dblPtMemAllocMat}
+
+This function allocates memory for a matrix of doubles.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double **dblPtMemAllocMat(int intRows, int intCols);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[intRows] number of rows.
+\item[intCols] number of columns.
+\end{description}
+
+\subsection{\texttt{dblPtMemAllocUpperTrMat} function} \label{sec:dblPtMemAllocUpperTrMat}
+
+This function allocates memory for a upper triangular square matrix.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double **dblPtMemAllocUpperTrMat(int intOrder);
+\end{verbatim}
+
+This function has only one argument, \texttt{intOrder}, which is the order of the matrix and a \texttt{double} pointer to pointer is returned.\\
+
+In a upper triangular square matrix all elements below the diagonal are zero: 
+%
+\begin{displaymath}
+\left( \begin{array}{ccccc}
+  a_{0,0} & a_{0,1} & a_{0,2} & a_{0,3} & a_{0,4} \\
+  0      & a_{1,1} & a_{1,2} & a_{1,3} & a_{1,4} \\ 
+  0      & 0      & a_{2,2} & a_{2,3} & a_{2,4} \\
+  0      & 0      & 0      & a_{3,3} & a_{3,4} \\
+  0      & 0      & 0      & 0      & a_{4,4} \\
+\end{array} \right)
+\end{displaymath}
+%
+For \texttt{intOrder = 5}:
+%
+\begin{verbatim}
+myMatrix = dbpPtMemAllocUpperTrMat(5);  
+\end{verbatim}
+%
+and:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Pointer} & \textbf{\# elements} & \textbf{First element} & \textbf{Last element}\\
+    \hline
+    \texttt{myMatrix[0]} & 5 & 0 & 4\\
+    \hline
+    \texttt{myMatrix[1]} & 4 & 0 & 3\\
+    \hline
+    \texttt{myMatrix[2]} & 3 & 0 & 2\\
+    \hline
+    \texttt{myMatrix[3]} & 2 & 0 & 1\\
+    \hline
+    \texttt{myMatrix[4]} & 1 & 0 & 0\\
+    \hline
+  \end{tabular}
+\end{center}
+%
+so:
+%
+\begin{displaymath}
+  myMatrix[i][j] = *(*(myMatrix + i) + j) = \left\{ \begin{array}{ll}
+    a_{i,j+i} & \forall \ i \le j \\
+     & \\
+    0 & \forall \ i > j
+    \end{array} \right.    
+\end{displaymath}
+
+\subsection{\texttt{dblPtMemAllocLowerTrMat} function} \label{sec:dblPtMemAllocLowerTrMat}
+
+This function allowcates memory for a lower triangular square matrix.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+double **dblPtMemAllocLowerTrMat(int intOrder);
+\end{verbatim}
+
+This function has only one argument, \texttt{intOrder}, which is the order of the matrix and a \texttt{double} pointer to pointer is returned.\\
+
+In a lower triangular square matrix all elements above the diagonal are zero: 
+%
+\begin{displaymath}
+\left( \begin{array}{ccccc}
+  a_{0,0} & 0      & 0      & 0      & 0 \\
+  a_{1,0} & a_{1,1} & 0      & 0      & 0 \\ 
+  a_{2,0} & a_{2,1} & a_{2,2} & 0      & 0 \\
+  a_{3,0} & a_{3,1} & a_{3,2} & a_{3,3} & 0 \\
+  a_{4,0} & a_{4,1} & a_{4,2} & a_{4,3} & a_{4,4} \\
+\end{array} \right)
+\end{displaymath}
+%
+For \texttt{intOrder = 5}:
+%
+\begin{verbatim}
+myMatrix = dbpPtMemAllocLowerTrMat(5);  
+\end{verbatim}
+%
+and:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Pointer} & \textbf{\# elements} & \textbf{First element} & \textbf{Last element}\\
+    \hline
+    \texttt{myMatrix[0]} & 1 & 0 & 0\\
+    \hline
+    \texttt{myMatrix[1]} & 2 & 0 & 1\\
+    \hline
+    \texttt{myMatrix[2]} & 3 & 0 & 2\\
+    \hline
+    \texttt{myMatrix[3]} & 4 & 0 & 3\\
+    \hline
+    \texttt{myMatrix[4]} & 5 & 0 & 4\\
+    \hline
+  \end{tabular}
+\end{center}
+%
+so:
+%
+\begin{displaymath}
+  myMatrix[i][j] = *(*(myMatrix + i) + j) = \left\{ \begin{array}{ll}
+    a_{i,j} & \forall \ i \le j \\
+     & \\
+    0 & \forall \ i < j
+    \end{array} \right.    
+\end{displaymath}
+
+\section{Freeing memory} \label{sec:freeingMemory}
+
+\BI\ includes its own functions to free memory.
+
+\subsection{\texttt{freeMemDblMat} function} \label{sec:freeMemDblMat}
+
+

@@ -1,0 +1,65 @@
+%
+% integers.h
+%
+
+\chapter{Integer numbers (integers.h)} \label{ch:integers}
+
+\section{Introduction}
+
+\BI \ includes functions about integer numbers in \texttt{integers.h} file.\\
+
+\section{Sum integers}
+
+\subsection{\texttt{uintSumFirstNIntegers} function} \label{sec:uintSumFirstNIntegers}
+
+This function gets the sum of the first $n$ integers.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+unsigned uintSumFirstNIntegers(int n);
+\end{verbatim}
+%
+If the sum is bigger than an unsigned int $0$ is returned.
+
+\section{Prime numbers}
+
+\subsection{\texttt{isPrime} function}
+
+This function checks if a number is a prime number.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int isPrime(int intN);  
+\end{verbatim}
+%
+The following codes are returned:
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_FALSE} & \texttt{intN} is not a prime number \\
+\hline
+\textbf{BIA\_TRUE} & \texttt{intN} is a prime number \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{\texttt{getFirstNPrimes} function}
+
+This function checks if a number is a prime number.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+void getFirstNPrimes(unsigned int *ptPrimes, int intNumber, int *ptCalc);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptPrimes] array where primes will be stored. Memory allocation for this array has to be initialized before using this function.
+\item[intNumber] number of primes to be computed.
+\item[*ptCalc] in this variable the total amount of computed primes will be stored.
+\end{description}

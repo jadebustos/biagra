@@ -1,0 +1,208 @@
+%
+% matrix.h
+%
+
+\chapter{Matrix (matrix.h)}
+
+\section{Introduction}
+
+Functions to manage matrices are defined in \texttt{matrix.h} file.\\
+
+\section{Data structures}
+
+Some data structures are defined in \BI \ to manage matrices.
+
+\subsection{\texttt{biaMatrix} data structure} \label{sec:biaMatrix}
+
+This data structure is used to store a matrix. \textbf{biaMatrix} data structure is defined in figure \ref{fig:biaMatrix} where:
+
+\begin{description}
+\item[intRows] number of rows.
+\item[intCols] number of columns.
+\item[**dblCoefs] pointer to store matrix coeficients.
+\end{description}
+
+\begin{figure}[!h]
+\begin{verbatim}
+typedef struct {
+  int intRows,
+      intCols;
+
+  double **dblCoefs;
+  } biaMatrix;   
+\end{verbatim}
+\caption{biaMatrix data structure.} \label{fig:biaMatrix}
+\end{figure}
+
+\FloatBarrier
+
+\section{Matrix creation}
+
+\BI \ includes functions to create some kind of matrices.
+
+\subsection{\texttt{identityMatrix} function}
+
+This function stores the identity matrix with order taken from intRows member of \texttt{ptMatrix}:
+%
+\begin{displaymath}
+  \left( \begin{array}{ccccc}
+    1 & 0 & 0 & 0 & 0 \\
+    0 & 1 & \ddots & 0 & 0 \\
+    0 & \ddots & \ddots & \ddots & 0 \\
+    0 & 0 & \ddots & 1 & 0 \\
+    0 & 0 & 0 & 0 & 1 \\
+  \end{array} \right)
+\end{displaymath}
+%
+The definition of this function:
+%
+\begin{verbatim}
+void identityMatrix(biaMatrix *ptMatrix);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix that has to be created before using this function. Memory allocation for \texttt{dblCoefs} must be done before using this function.
+\end{description}
+%
+\ \\
+%
+\note{\texttt{intRows} is used to get the matrix order.}
+
+\subsection{\texttt{scalingMatrix} function}
+
+This function stores the scaling matrix with factor $\lambda$ and order taken from intRows member of \texttt{ptMatrix}:
+%
+\begin{displaymath}
+  \left( \begin{array}{ccccc}
+    \lambda & 0 & 0 & 0 & 0 \\
+    0 & \lambda & \ddots & 0 & 0 \\
+    0 & \ddots & \ddots & \ddots & 0 \\
+    0 & 0 & \ddots & \lambda & 0 \\
+    0 & 0 & 0 & 0 & \lambda \\
+  \end{array} \right)
+\end{displaymath}
+%
+The definition of this function:
+%
+\begin{verbatim}
+void scalingMatrix(biaMatrix *ptMatrix, double dblFactor);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix that has to be created before using this function. Memory allocation for \texttt{dblCoefs} must be done before using this function.
+\end{description}
+%
+\ \\
+%
+\note{\texttt{intRows} is used to get the matrix order.}
+
+\subsection{\texttt{nullMatrix} function}
+
+This function stores the null matrix with order taken from intRows member of \texttt{ptMatrix}:
+%
+\begin{displaymath}
+  \left( \begin{array}{ccccc}
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & \ddots & 0 & 0 \\
+    0 & \ddots & \ddots & \ddots & 0 \\
+    0 & 0 & \ddots & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 \\
+  \end{array} \right)
+\end{displaymath}
+%
+The definition of this function:
+%
+\begin{verbatim}
+void nullMatrix(biaMatrix *ptMatrix);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix that has to be created before using this function. Memory allocation for \texttt{dblCoefs} must be done before using this function.
+\end{description}
+%
+\ \\
+%
+\note{\texttt{intRows} and \texttt{intCols} is used to get the matrix order.}
+
+\section{Matrix operations}
+
+\subsection{\texttt{transposeMatrix} function}
+
+This function stores the transpose matrix of a given matrix.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+void transposeMatrix(biaMatrix *ptMatrix, biaMatrix *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix to get its transpose matrix.
+\item[*ptRes] matrix to store the transpose matrix. Memory has to be preallocated before using this function.
+\end{description}
+%
+\ \\
+%
+\note{\texttt{intRows} and \texttt{intCols} is used to get the matrix order.}
+
+\section{Matrix checks}
+
+\subsection{\texttt{isIdentityMatrix} function}
+
+This function checks if a matrix is the identity matrix.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int isIdentityMatrix(biaMatrix *ptMatrix);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix to check.
+\end{description}
+%
+
+\subsection{\texttt{isNullMatrix} function}
+
+This function checks if a matrix is a null matrix.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int isNullMatrix(biaMatrix *ptMatrix, double dblTol);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix to check.
+\item[dblTol] if a matrix element is minor than this value it is assumed it is a null element.
+\end{description}
+%
+
+\subsection{\texttt{isSymmetricMatrix} function}
+
+This function checks if a matrix is a symmetric matrix.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int isSymmetricMatrix(biaMatrix *ptMatrix);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[*ptMatrix] matrix to check.
+\end{description}
+%
