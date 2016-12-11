@@ -10,7 +10,7 @@
 \item \BI is enterely coded using \textbf{C} language.
 \item \BI has been developed and tested under \emph{LiNUX}.
 \item \BI is distribuded as open source and its author does not take any responibility.
-\item I wrote \BI in the 90s to help me with some subjects in my degree.
+\item I wrote \BI in the 90s to help me with some academic tasks when studying my degree.
 
 \end{itemize}
 
@@ -49,40 +49,8 @@ For common errors as:
 
 \BI\ uses its own constants to notify these errors (Chapter \ref{ch:mathematicalConsts}).\\
 
-Cuando una funci\'on devuelva un dato, que no sea un c\'odigo que indique
-el estado en el que se termin\'o la ejecuci\'on de la funci\'on, se indicar\'a 
-anteponiendo un prefijo al nombre de la funci\'on, el cual indicar\'a que tipo
-de dato devuelve, por ejemplo:
+\section{How to install \BI under LiNUX}
 
-\begin{enumerate}
-\item \emph{double dblFuncion(\ldots)} funci\'on que devuelve un dato de
-      tipo \emph{double}.
-\item \emph{int intFuncion(\ldots)} funci\'on que devuelve un dato de tipo
-      \emph{int}.
-\item \emph{double *dblPtFuncion(\ldots)} funci\'on que devuelve un dato de
-      tipo puntero a \emph{double}.
-\item \emph{void Funcion(\ldots)} funci\'on que no devuelve ning\'un dato.
-\end{enumerate}
-
-\newpage
-
-\section{C\'odigos devueltos por las funciones}
-
-No es obligatorio que las funciones devuelvan un valor.\newline
-Cuando una funci\'on devuelva un valor ser\'a por dos razones:
-
-\begin{itemize}
-\item Para devolver el resultado de una operaci\'on.
-\item Para informar de como termin\'o una operaci\'on.
-\end{itemize} 
-
-Es este \'ultimo caso el que nos incumbe.\newline
-
-Cuando una funci\'on devuelva un dato indicando como termin\'o una
-determinada operaci\'on, este dato ser\'a, necesariamente, un entero y los
-c\'odigos devueltos los podemos ver en la p\'agina \pageref{sec:tiposdecodigos}.
-
-\section{Como instalar \BI en LiNUX}
 Para instalar \BI lo primero que hay que hacer es entrar en el sistema
 como \textbf{root} y situarse en el directorio donde esten los fuentes
 de la biblioteca.
@@ -105,53 +73,3 @@ biblioteca\\ \emph{\textbf{/usr/lib/libbiagra.a}}.\newline
 Luego si se utiliza una funci\'on de esta biblioteca, cuyo prototipo est\'a en 
 el fichero de cabecera \emph{rngkutta.h} habr\'a que incluir en las directivas 
 al prepocesador \textbf{\#include $<$biagra/rngkutta.h$>$}.
-
-\newpage
-
-\subsection{Intalaci\'on de la biblioteca \BI din\'amica ELF}
-
-\subsection{Instalaci\'on de ambas bibliotecas}
-Para instalar la biblioteca \BI en su forma est\'atica y din\'amica ELF:
-
-\begin{center}
-\emph{make todo}
-\end{center}
-
-Esto lo que hace es ejecutar primero
-
-\begin{center}
-\emph{./instalar estatica}
-\end{center}
-
-lo cual instalar\'a la biblioteca est\'atica, y luego 
-
-\begin{center}
-\emph{./instalar elf}
-\end{center}
-
-lo cual instalar\'a la biblioteca din\'amica ELF.
-
-\section{Como utilizar \BI en LiNUX}
-\BI es una biblioteca para programaci\'on cient\'{\i}fica, 
-desarrollada para ser usada en programas escritos en \textbf{C}, se
-distribuye en varios formatos:
-
-\begin{description}
-\item[Biblioteca est\'atica]
-\item[Biblioteca din\'amica ELF]
-\end{description}
-
-\subsection{Biblioteca est\'atica}
-Para el uso de esta biblioteca hay que indicarle al \emph{montador} que
-biblioteca debe \emph{enlazar}.
-Por ejemplo, supongamos que hemos escrito un programa para resolver una
-ecuaci\'on diferencial por un m\'etodo \emph{Runge-Kutta} y hemos utilizado
-funciones cuyos prototipos estan en \textbf{edo.h} y \textbf{rngkutta.h}, si
-nuestro programa es \mbox{\emph{programa.c}}, para crear el ejecutable:
-
-\begin{center}
-\emph{gcc programa.c -o programa -l\textbf{biagra} -l\textbf{m}\footnote{\BI 
-utiliza la biblioteca estandar matem\'atica.}} 
-\end{center}
-
-\subsection{Biblioteca din\'amica ELF}

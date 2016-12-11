@@ -45,7 +45,9 @@ typedef struct {
 %
 \FloatBarrier
 
-\subsection{\texttt{biaDataRK} data structure}
+\note{See appendix \ref{ch:runge} if you need information about Butcher matricial notation.}
+
+\subsection{\texttt{biaDataRK} data structure} \label{sec:biaDataRK}
 
 This structure is used to store all the data needed to apply a Runge-Kutta method.\\
 
@@ -104,125 +106,128 @@ typedef struct {
 %
 \FloatBarrier
 
-\section{C\'alculo del n\'umero de nodos}
+\section{Node number calculations}
 
-\subsection{intNumNodos}
-Esta funci\'on calcula el n\'umero de nodos que podemos situar en un
-intervalo.\newline
+\subsection{\texttt{intNodeNumber} function}
 
-El prototipo de esta funci\'on es el siguiente:
+This function gets the number of nodes that can be placed in an interval. All nodes are equidistant.\\
 
-\begin{center}
-\emph{int \textbf{intNumNodos}(double dblLong, double dblPaso)}
-\end{center}
-
+The definition of this function:
+%
+\begin{verbatim}
+int intNodeNumber(double dblLong, double dblStepSize)
+\end{verbatim}
+%
+where:
+%
 \begin{description}
-\item[dblLong] longitud del intervalo.
-\item[dblPaso] distancia entre los nodos.
+\item[dblLong] interval length.
+\item[dblStepSize] distance between two nodes.
 \end{description}
 
-La funci\'on devuelve el n\'umero de nodos que podemos situar en dicho
-intervalo.\newline
+The function returns the number of nodes that can be placed.\\ \\
+%
+\note{Arguments are supposed to be different from zero.}
+\ \\
+\note{Arguments are supposed to be positive.}
 
-Por ejemplo:
-
-\begin{center}
-\emph{intResultado = \textbf{intNumNodos}(dblLong, dblPaso);}
-\end{center}
-
-Almacenar\'{\i}a en \emph{intResultado} el n\'umero de nodos que podemos 
-situar en un intervalo de longitud \emph{dblLong} e igualmente espaciados
-por \emph{dblPaso}.\\
-
-Observaciones:
-
-\begin{itemize}
-\item La funci\'on supone que los argumentos que recibe son distintos de cero.
-\item La funci\'on considerar\'a siempre los argumentos que recibe como
-positivos, aunque sean negativos.
-\end{itemize}
-
-\section{Explicit Runge-Kutta methods}
+\section{Explicit Runge-Kutta methods (scalar problems)}
 
 \subsection{\texttt{ExplicitRungeKutta} function}
 
-Funci\'on que resuelve un \emph{P.V.I.}\footnote{Problema de valores 
-iniciales.} mediante un m\'etodo \emph{Runge-Kutta expl\'{\i}cito}.\newline
+This function solves an \emph{I.V.P.} using an explicit Runge-Kutta method.\\
 
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{explicitRungeKutta}(biaDataRK *ptstrData,\\
-double (*IVP)(double dblX, double dblY))}
-\end{center} 
-
-\begin{description}
-\item[ptstrDatos] \emph{puntero} a una variable del tipo 
-\textbf{DatosRK}\footnote{Apartado (\ref{sec:datosRK}) en la p\'agina 
-\pageref{sec:datosRK}.}, la cual contiene los datos necesarios para
-la resoluci\'on del problema.
-\item[PVI] \emph{puntero} a una funci\'on que devuelve el valor de la
-ecuaci\'on diferencial en un punto.
-\begin{description}
-	\item[dblX] punto en el que queremos evaluar la ecuaci\'on diferencial.
-	\item[dblY] valor de la ecuaci\'on diferencial en \emph{dblX}.
-\end{description}
-\end{description}
-
-Por ejemplo, si tenemos el siguiente \emph{P.V.I.}:
-
-\begin{center}
-$
-\left \{ \begin{array}{l}
-y' = y(x) * \frac{x-y(x)}{x^2} \\
-y(1) = 2
-\end{array} \right.
-$
-\end{center}
-
-la funci\'on \emph{PVI} ser\'{\i}a:
-
+The definition of this function:
+%
 \begin{verbatim}
-double PVI(double dblX, double dblY)
-{
-double  dblResultado;
+int explicitRungeKutta(biaDataRK *ptData, 
+               double (*IVP)(double dblX, double dblY)
+\end{verbatim} 
+%
+where:
+%
+\begin{description}
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. This variable contains all the necessary data to solve the \emph{I.V.P.}
+\item[PVI] C function's pointer to a function implementing the \emph{O.D.E.}. This functions needs to have two double arguments and returns the value of the \emph{I.V.P.}:
+\begin{description}
+	\item[dblX] point where we want to evaluate the \emph{O.D.E.}
+	\item[dblY] \emph{O.D.E.} value in \texttt{dblX} ($y_i \approx y(x_i)$).
+\end{description}
+\end{description}
 
-dblResultado = dblY*((dblX-dblY)/(dblX*dblX));
-
-return(dblResultado);
-}
-\end{verbatim}
-
-La funci\'on, \emph{ExplicitRungeKutta}, devuelve los siguientes c\'odigos:
-
+The following codes are returned:
+%
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{ERR\_AMEM} & Hubo error en la asignaci\'on de memoria. \\
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
 \hline
-\textbf{BIA\_TRUE} & Success. \\
+\textbf{BIA\_TRUE} & Success \\
 \hline
 \end{tabular}
 \end{center}
 
-\begin{center}
-\emph{intResultado = \textbf{ExplicitRungeKutta}(\&varstrDatRK, PVI);}
-\end{center}
+\subsubsection{Usage example}
 
-Resolver\'{\i}a el \emph{P.V.I.} representado por la funci\'on \emph{PVI} 
-utilizando los datos almacenados en la variable, del tipo \emph{DatosRK},
-\emph{varstrDatRK} y almacenar\'{\i}a en \emph{intResultado} el c\'odigo
-devuelto por la funci\'on.
+For instance, to solve this \emph{I.V.P.}:
+%
+\begin{displaymath}
+\left \{ \begin{array}{l}
+y' = y(x) * \frac{x-y(x)}{x^2} \\
+y(1) = 2
+\end{array} \right.
+\end{displaymath}
+%
+the implementation of the \texttt{IVP} would be:
+%
+\begin{verbatim}
+double IVP(double dblX, double dblY) {
+  double  dblResultado;
 
-\subsection{\texttt{RungeKuttaClasico} function}
+  dblRes = dblY*((dblX-dblY)/(dblX*dblX));
 
-Funci\'on que inicializa los coeficientes para el m\'etodo \emph{Runge-Kutta 
-Cl\'asico}, el cual es un m\'etodo de $4$ etapas y orden $4$.\newline
+  return (dblRes);
+}
+\end{verbatim}
+%
+A \texttt{biaDataRK} variable has to be initialized. \BI \ provides several functions to initialize the \texttt{biaButcherArray} member.\\
 
-La notaci\'on matricial del m\'etodo es la siguiente:
+To solve the \emph{I.V.P.} problem:
+%
+\begin{verbatim}
+i = explicitRungeKutta(&varDataRK, IVP);  
+\end{verbatim}
 
-\begin{center}
-$
+\subsection{\texttt{classicRungeKuttaCoefs} function}
+
+This function initialize the Butcher array for the classic Runge-Kutta method (four-stage method and order two).\\
+
+The definition of this function:
+%
+\begin{verbatim}
+int classicRungeKuttaCoefs(biaDataRK *ptData);
+\end{verbatim} 
+%
+where:
+%
+\begin{description}
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. In this variable the following members will be initialized:
+%
+\begin{description}
+%    
+\item[intStages] will be initialized to $4$.
+%  
+\item[intImplicit] will be initialized to \texttt{BIA\_IMPLICIT\_RK\_FALSE}.
+%
+\item[strCoefs] will be initialized with the Butcher array.
+%  
+\end{description}
+%  
+\end{description}
+%
+The Butcher array for this method:
+%
+\begin{displaymath}
 \begin{array}{c|cccc}
 0 & 0 \\
 \frac{1}{2} & \frac{1}{2} & 0 \\
@@ -231,50 +236,50 @@ $
 \hline
  & \frac{1}{6} & \frac{1}{3} & \frac{1}{3} & \frac{1}{6} \\
 \end{array}
-$
-\end{center}
-
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{RungeKuttaClasico}(DatosRK *ptstrDatos)}
-\end{center}
-
-\begin{description}
-\item[ptstrDatos] puntero a una variable de \emph{estructura} del tipo
-\emph{DatosRK}.
-\end{description}
-
-La funci\'on devuelve los siguientes c\'odigos:
-
+\end{displaymath}
+%
+The following codes are returned:
+%
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{ERR\_AMEM} & Hubo un error en la asignaci\'on de memoria. \\
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
 \hline
-\textbf{TRUE} & Se inicializaron con \'exito los coeficientes. \\
+\textbf{BIA\_TRUE} & Success \\
 \hline
 \end{tabular}
 \end{center}
 
-Por ejemplo:
+\subsection{\texttt{heunRungeKuttaCoefs} function}
 
-\begin{center}
-\emph{intResultado = \textbf{RungeKuttaClasico}(\&varstrDatRK);}
-\end{center}
+This function initialize the Butcher array for the Heun Runge-Kutta method (three-stage method and order three).\\
 
-Inicializar\'{\i}a los coeficientes del m\'etodo en la variable 
-\emph{varstrDatRK}, en \emph{intResultado} el valor \textbf{TRUE} si se pudieron
-inicializar los coeficientes y en caso contrario \textbf{ERR\_AMEM}.
-
-\subsection{MetodoHeun}
-Funci\'on que inicializa los coeficientes para el m\'etodo de \emph{Heun}, el
-cual es un m\'etodo \emph{Runge-Kutta} de $3$ etapas y orden $3$.\newline
-
-La notaci\'on matricial del m\'etodo es la siguiente:
-
-\begin{center}
-$
+The definition of this function:
+%
+\begin{verbatim}
+int heunRungeKuttaCoefs(biaDataRK *ptData);
+\end{verbatim} 
+%
+where:
+%
+\begin{description}
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. In this variable the following members will be initialized:
+%
+\begin{description}
+%    
+\item[intStages] will be initialized to $3$.
+%  
+\item[intImplicit] will be initialized to \texttt{BIA\_IMPLICIT\_RK\_FALSE}.
+%
+\item[strCoefs] will be initialized with the Butcher array.
+%  
+\end{description}
+%  
+\end{description}
+%
+The Butcher array for this method:
+%
+\begin{displaymath}
 \begin{array}{c|ccc}
 0 & 0 \\
 \frac{1}{3} & \frac{1}{3} & 0 \\
@@ -282,51 +287,50 @@ $
 \hline
  & \frac{1}{4} & 0 & \frac{3}{4}
 \end{array}
-$
-\end{center}
-
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{MetodoHeun}(DatosRK *ptstrDatos)}
-\end{center}
-
-\begin{description}
-\item[ptstrDatos] puntero a una variable de \emph{estructura} del tipo
-\emph{DatosRK}.
-\end{description}
-
-La funci\'on devuelve los siguientes c\'odigos:
-
+\end{displaymath}
+%
+The following codes are returned:
+%
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{ERR\_AMEM} & Hubo un error en la asignaci\'on de memoria. \\
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
 \hline
-\textbf{TRUE} & Se inicializaron con \'exito los coeficientes. \\
+\textbf{BIA\_TRUE} & Success \\
 \hline
 \end{tabular}
 \end{center}
 
-Por ejemplo:
+\subsection{\texttt{kuttaRungeKuttaCoefs} function}
 
-\begin{center}
-\emph{intResultados = \textbf{MetodoHeun}(\&varstrDatRK);}
-\end{center}
+This function initialize the Butcher array for the Kutta Runge-Kutta method (three-stage method and order three).\\
 
-Inicializar\'{\i}a los coeficientes del m\'etodo en la variable
-\emph{varstrDatRK}, en \emph{intResultado} el valor \textbf{TRUE} si se pudieron
-inicializar los coeficientes y en caso contrario \textbf{ERR\_AMEM}.
-
-\subsection{MetodoKutta}
-
-Funci\'on que inicializa los coeficientes para el m\'etodo de \emph{Kutta}, el
-cual es un m\'etodo \emph{Runge-Kutta} de $3$ etapas y orden $3$.\newline
-
-La notaci\'on matricial del m\'etodo es la siguiente:
-
-\begin{center}
-$
+The definition of this function:
+%
+\begin{verbatim}
+int kuttaRungeKuttaCoefs(biaDataRK *ptData);
+\end{verbatim} 
+%
+where:
+%
+\begin{description}
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. In this variable the following members will be initialized:
+%
+\begin{description}
+%    
+\item[intStages] will be initialized to $3$.
+%  
+\item[intImplicit] will be initialized to \texttt{BIA\_IMPLICIT\_RK\_FALSE}.
+%
+\item[strCoefs] will be initialized with the Butcher array.
+%  
+\end{description}
+%  
+\end{description}
+%
+The Butcher array for this method:
+%
+\begin{displaymath}
 \begin{array}{c|ccc}
 0 & 0 \\
 \frac{1}{2} & \frac{1}{2} & 0 \\
@@ -334,172 +338,116 @@ $
 \hline
  & \frac{1}{6} & \frac{2}{3} & \frac{1}{6}
 \end{array}
-$
-\end{center}
-
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{MetodoKutta}(DatosRK *ptstrDatos)}
-\end{center}
-
-\begin{description}
-\item[ptstrDatos] puntero a una variable de \emph{estructura} del tipo
-\emph{DatosRK}.
-\end{description}
-
-La funci\'on devuelve los siguientes c\'odigos:
-
+\end{displaymath}
+%
+The following codes are returned:
+%
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{ERR\_AMEM} & Hubo un error en la asignaci\'on de memoria. \\
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
 \hline
-\textbf{TRUE} & Se inicializaron con \'exito los coeficientes. \\
+\textbf{BIA\_TRUE} & Success \\
 \hline
 \end{tabular}
 \end{center}
 
-Por ejemplo:
+\subsection{\texttt{modifiedEulerRungeKuttaCoefs} function}
 
-\begin{center}
-\emph{intResultado = \textbf{MetodoKutta}(\&varstrDatRK);}
-\end{center}
+This function initialize the Butcher array for the modified Euler Kutta Runge-Kutta method (two-stage method and order two).\\
 
-Inicializar\'{\i}a los coeficientes del m\'etodo en la variable
-\emph{varstrDatRK}, en \emph{intResultado} el valor \textbf{TRUE} si se pudieron
-inicializar los coeficientes y en caso contrario \textbf{ERR\_AMEM}.
-
-\subsection{\texttt{EulerModificado} function}
-
-Funci\'on que inicializa los coeficientes para el m\'etodo de \emph{Euler 
-modificado}, el cual es un m\'etodo \emph{Runge-Kutta} de $2$ etapas y 
-orden $2$.\newline
-
-La notaci\'on matricial del m\'etodo es la siguiente:
-
-\begin{center}
-$
+The definition of this function:
+%
+\begin{verbatim}
+int modifiedEulerRungeKuttaCoefs(biaDataRK *ptData);
+\end{verbatim} 
+%
+where:
+%
+\begin{description}
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. In this variable the following members will be initialized:
+%
+\begin{description}
+%    
+\item[intStages] will be initialized to $2$.
+%  
+\item[intImplicit] will be initialized to \texttt{BIA\_IMPLICIT\_RK\_FALSE}.
+%
+\item[strCoefs] will be initialized with the Butcher array.
+%  
+\end{description}
+%  
+\end{description}
+%
+The Butcher array for this method:
+%
+\begin{displaymath}
 \begin{array}{c|cc}
 0 & 0 \\
 \frac{1}{2} & \frac{1}{2} & 0 \\
 \hline
  & 0 & 1
 \end{array}
-$
-\end{center}
-
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{EulerModificado}(DatosRK *ptstrDatos)}
-\end{center}
-
-\begin{description}
-\item[ptstrDatos] puntero a una variable de \emph{estructura} del tipo
-\emph{DatosRK}.
-\end{description}
-
-La funci\'on devuelve los siguientes c\'odigos:
-
+\end{displaymath}
+%
+The following codes are returned:
+%
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{ERR\_AMEM} & Hubo un error en la asignaci\'on de memoria. \\
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
 \hline
-\textbf{TRUE} & Se inicializaron con \'exito los coeficientes. \\
+\textbf{BIA\_TRUE} & Success \\
 \hline
 \end{tabular}
 \end{center}
 
-Por ejemplo:
+\subsection{\texttt{improvedEulerRungeKuttaCoefs} function}
 
-\begin{center}
-\emph{intResultado = \textbf{EulerModificado}(\&varstrDatRK);}
-\end{center}
+This function initialize the Butcher array for the improved Euler Runge-Kutta method (two-stage method and order two).\\
 
-
-Inicializar\'{\i}a los coeficientes del m\'etodo en la variable
-\emph{varstrDatRK}, en \emph{intResultado} el valor \textbf{TRUE} si se pudieron
-inicializar los coeficientes y en caso contrario \textbf{ERR\_AMEM}.
-
-\subsection{\texttt{EulerMejorado} function}
-
-Funci\'on que inicializa los coeficientes para el m\'etodo de \emph{Euler mejorado},
-el cual es un m\'etodo \emph{Runge-Kutta} de $2$ etapas y orden $2$.\newline
-
-La notaci\'on matricial del m\'etodo es la siguiente:
-
-\begin{center}
-$
+The definition of this function:
+%
+\begin{verbatim}
+int improvedRungeKuttaCoefs(biaDataRK *ptData);
+\end{verbatim} 
+%
+where:
+%
+\begin{description}
+\item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. In this variable the following members will be initialized:
+%
+\begin{description}
+%    
+\item[intStages] will be initialized to $3$.
+%  
+\item[intImplicit] will be initialized to \texttt{BIA\_IMPLICIT\_RK\_FALSE}.
+%
+\item[strCoefs] will be initialized with the Butcher array.
+%  
+\end{description}
+%  
+\end{description}
+%
+The Butcher array for this method:
+%
+\begin{displaymath}
 \begin{array}{c|cc}
 0 & 0 \\
 1 & 1 & 0 \\
 \hline
  & \frac{1}{2} & \frac{1}{2}
 \end{array}
-$
-\end{center}
-
-El prototipo de esta funci\'on es el siguiente:
-
-\begin{center}
-\emph{int \textbf{EulerMejorado}(DatosRK *ptstrDatos)}
-\end{center}
-
-\begin{description}
-\item[ptstrDatos] puntero a una variable de \emph{estructura} del tipo
-\emph{DatosRK}.
-\end{description}
-
-La funci\'on devuelve los siguientes c\'odigos:
-
+\end{displaymath}
+%
+The following codes are returned:
+%
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
-\textbf{ERR\_AMEM} & Hubo un error en la asignaci\'on de memoria. \\
+\textbf{BIA\_MEM\_ALLOC} & Memory error allocation \\
 \hline
-\textbf{TRUE} & Se inicializaron con \'exito los coeficientes. \\
+\textbf{BIA\_TRUE} & Success \\
 \hline
 \end{tabular}
 \end{center}
-
-Por ejemplo:
-
-\begin{center}
-\emph{intResultado = \textbf{EulerMejorado}(\&varstrDatRK);}
-\end{center}
-
-
-Inicializar\'{\i}a los coeficientes del m\'etodo en la variable
-\emph{varstrDatRK}, en \emph{intResultado} el valor \textbf{TRUE} si se pudieron
-inicializar los coeficientes y en caso contrario \textbf{ERR\_AMEM}.
-
-
-
-
-
-Todas estas funciones suponen que la variable de \emph{estructura}, del tipo
-\emph{DatosRK}\footnote{Apartado (\ref{sec:datosRK}) en la p\'agina 
-\pageref{sec:datosRK}}, no tienen dimensionados los punteros en ella 
-contenidos, raz\'on por la cual ser\'a necesario liberar la memoria asignada
-a estos antes de pasarle como parametro una variable de este tipo a una de
-las siguientes funciones(siempre y cuando se hayan dimensionado dichos
-punteros).\newline
-
-Hay que destacar que \textbf{NO} se inicializan todos los miembros de esta
-estructura, s\'olo aquellos miembros que contienen los coeficientes del 
-m\'etodo.\newline
-
-Los siguientes miembros \textbf{NO} se inicializan:
-%
-\begin{description}
-\item[intNumAprox]
-\item[dblPuntos]
-\item[dblPaso]
-\item[dblInicio]
-\item[dblFinal]
-\end{description}
-
-Estos miembros son independientes del m\'etodo, dependen del problema que
-se quiera resolver y tendr\'an que ser inicializados por el usuario.

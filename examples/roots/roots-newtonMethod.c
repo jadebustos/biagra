@@ -8,8 +8,6 @@
 #include <biagra/roots.h>
 #include <biagra/const.h>
 
-#include "polsupport.h"
-
 /*                                                                      */
 /*      B.I.A.G.R.A.    (c) 1998 Jose Angel de Bustos Perez             */
 /*                       <jadebustos@gmail.com>                         */
