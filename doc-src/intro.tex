@@ -51,25 +51,22 @@ For common errors as:
 
 \section{How to install \BI under LiNUX}
 
-Para instalar \BI lo primero que hay que hacer es entrar en el sistema
-como \textbf{root} y situarse en el directorio donde esten los fuentes
-de la biblioteca.
-
-\subsection{Intalaci\'on de la biblioteca \BI est\'atica}
-Para instalar este tipo bibilioteca se puede hacer de dos formas:
-
-\begin{enumerate}
-\item \emph{./instalar estatica}
-\item \emph{make estatica}
-\end{enumerate}
-
-En realidad ambas hacen lo mismo, la opci\'on con \emph{make} en realidad 
-ejecuta \emph{./instalar estatica}.\newline
-
-Al realizar cualquiera de estas dos opciones se copiar\'an los ficheros
-cabezera a \emph{\textbf{/usr/include/biagra}} y a continuaci\'on se crear\'a la
-biblioteca\\ \emph{\textbf{/usr/lib/libbiagra.a}}.\newline
-
-Luego si se utiliza una funci\'on de esta biblioteca, cuyo prototipo est\'a en 
-el fichero de cabecera \emph{rngkutta.h} habr\'a que incluir en las directivas 
-al prepocesador \textbf{\#include $<$biagra/rngkutta.h$>$}.
+To install \BI:
+%
+\begin{verbatim}
+# make static
+\end{verbatim}
+%
+The following actions will take place:
+%
+\begin{itemize}
+\item Header files will be copied to \texttt{/usr/include/biagra}.
+\item The library will be placed at \texttt{/usr/lib/libbiagra.a-X.Y.Z} and a symbolic link named \texttt{/usr/lib/libbiagra.a} will be created pointing to \texttt{/usr/lib/libbiagra.a-X.Y.Z}.
+\item Example files will be copied to \texttt{/usr/share/biagra-X.Y.Z}.
+\end{itemize}
+%
+To uninstall \BI:
+%
+\begin{verbatim}
+# make uninstall  
+\end{verbatim}
