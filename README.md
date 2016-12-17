@@ -17,7 +17,7 @@ Some months ago I started reviewing my backups to centralize useful stuff into o
 
 This library was originally written in Spanish so I decided to translate into English and making it public available on Github.
 
-It is important to remark that this release candidate version has not been tested and the results maybe not accurate enough. I will check and add tests to check it in a not distant future.
+It is important to remark that this release candidate version has not been tested and the results maybe not be accurate enough. I will check and add tests to check it in a not distant future.
 
 Today there are a lot of resources in many programming languages but in the days this library was published there was no much stuff available due to access to the internet was not as generalized as nowadays.
 

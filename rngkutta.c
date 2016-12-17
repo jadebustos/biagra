@@ -87,6 +87,9 @@ int explicitRungeKutta(biaDataRK *ptData, double (*IVP)(double dblX, double dblY
    
    }
 
+  /* Last point */
+  ptData->dblLast = dblPrevPoint;
+
   /* freing memory */
   free (dblK);   
 

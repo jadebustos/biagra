@@ -1,0 +1,5 @@
+2016-12-17  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
+
+	* rngkutta.c: Last value stored in biaDataRK variable.
+	* Documentation updates.
+
