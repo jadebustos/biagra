@@ -4,7 +4,7 @@ B.I.A.G.R.A stands for **BI**bliotec**A** de pro**GR**amación científic**A** w
 
 This library was created when I was studying my degree to ease my academic tasks when I was not forced to use Mathematica, Matlab, SPSS, Linpro, ANSYS, Statgraphics, ...
 
-About the name? Well, for those days a new medicine was introduced into the market, my mind ...
+About the name? Well, for those days a new medicine was introduced into the market, my mind \dots
 
 First version was published in 1.998 but it is was not widely distributed.
 
