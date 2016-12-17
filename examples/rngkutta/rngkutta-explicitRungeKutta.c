@@ -23,7 +23,6 @@ double IVP(double dblX, double dblY) {
 }
 
 /* y(x) */
-
 double y(double dblX) {
   return dblX/(.5 + log(dblX));
 }
