@@ -16,12 +16,21 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
+/*
+   The following are deliberately forbidden:
+     - Attempt World domination
+     - Using this software as compiling massive weapon
+     - Translating into Klingon
+     - Ask for /home nationalisms
+     - Reverse spelling of this source code
+*/
+
 /*                                                                      */
 /* Function to evaluate a polynomial in one value.                      */
 /*                                                                      */
 /* Arguments:                                                           */
 /*    *ptstrPol -> Polynomial                                           */
-/*    dblX      -> Value to evaluate                                    */                                                                            
+/*    dblX      -> Value to evaluate                                    */                                                                          
 /*                                                                      */
 /* Returned value:                                                      */
 /*                                                                      */

@@ -4,7 +4,7 @@
 #include <biagra/pi.h>
 
 /*                                                                      */
-/*      B.I.A.G.R.A.    (c) 1998 Jose Angel de Bustos Perez             */
+/*      B.I.A.G.R.A.    (c) 2013 Jose Angel de Bustos Perez             */
 /*                       <jadebustos@gmail.com>                         */
 /*                                                                      */
 /*      This software is licensed under GPLv2:                          */
