@@ -83,7 +83,7 @@ int main (void) {
   printf("                x^2\n");
   printf("\ny(1) = 2\n\n");
   printf("xi: %lf\t(Point where the approximation was computed)\n", myData.dblLast);
-  printf("yi: %lf\t(Approximation computed by the classic Runge Kutta)\n", myData.dblPoints[myData.intNumApprox - 1]);
+  printf("yi: %lf\t(Approximation computed by the classic Runge Kutta method)\n", myData.dblPoints[myData.intNumApprox - 1]);
   printf("y(%lf): %lf\t(Real value)\n", myData.dblLast, y(myData.dblLast));
   printf("|yi - y(xi)|: %g\t(Error between the real value and the computed approximation)\n", fabs(myData.dblPoints[myData.intNumApprox - 1] - y(myData.dblLast)));
 

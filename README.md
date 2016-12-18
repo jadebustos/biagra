@@ -30,3 +30,18 @@ I do not have any plans to increase this library. If I find the missing code I w
 It is possible that I add some code from time to time due to the possibility I have to code some numerical methods in the future.
 
 I hope this code is useful for you.
+
+# Library usage
+
+Just use the header file and link the following libs together with **-lbiagra**:
+
+| Header     | -lm | -lgmp | -fopenmp |
+|------------|-----|-------|----------|
+| complex    | Yes |  No   |    No    |
+| integers   | Yes |  No   |    No    |
+| matrix     | No  |  No   |    No    |
+| pi         | No  |  No   |    Yes   |
+| polynomial | No  |  No   |    No    |
+| resmem     | No  |  No   |    No    |
+| rngkutta   | Yes |  No   |    No    |
+| roots      | Yes |  No   |    No    |
