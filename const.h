@@ -11,6 +11,15 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
+/*
+   The following are deliberately forbidden:
+     - Attempt World domination
+     - Using this software as compiling massive weapon
+     - Translating into Klingon
+     - Ask for /home nationalisms
+     - Reverse spelling of this source code
+*/
+
   #ifdef BIA_E
     #undef  BIA_E
     #define BIA_E 2.71828182845904523536029

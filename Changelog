@@ -1,3 +1,9 @@
+2016-12-18  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
+
+	* examples/pi/pi-threadedPiMidPointRule.c: example of the pi computation using the mid point rule. 
+	* pi.c/pi.h: mid point rule to compute pi.
+	* Documentation updates.
+
 2016-12-17  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
 
 	* rngkutta.c: Last value stored in biaDataRK variable.

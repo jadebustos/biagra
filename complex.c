@@ -13,6 +13,15 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
+/*
+   The following are deliberately forbidden:
+     - Attempt World domination
+     - Using this software as compiling massive weapon
+     - Translating into Klingon
+     - Ask for /home nationalisms
+     - Reverse spelling of this source code
+*/
+
 /*                                                                      */
 /* Function to add two complex numbers                                  */
 /*                                                                      */

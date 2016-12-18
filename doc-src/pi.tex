@@ -1,0 +1,22 @@
+%
+% PI.H
+%
+
+\chapter{$\pi$ computation (pi.h)}
+
+\section{Introduction}
+
+In this chapter several methods will be shown to compute $\pi$ digits.\\
+
+The following libraries will be used:
+%
+\begin{itemize}
+\item \href{http://www.openmp.org/}{OpenMP} the Open Multi-Processing API which provides multiplatform shared memory capabilities for parallel programming.
+\item \href{https://gmplib.org/}{GMP} the GNU Multiple Precision Arithmetic Library.
+\end{itemize}
+
+\section{The mid point rule}
+
+\begin{displaymath}
+\pi = 4 \cdot \int_0^1 \frac{1}{1+x^2} dx \approx \frac{4}{n} \cdot \sum_{i=0}^n \frac{1}{1+x_i^2} \quad \textrm{where} \quad x_i = \frac{i -\frac{1}{2}}{n}
+\end{displaymath}
