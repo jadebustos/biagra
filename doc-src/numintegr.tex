@@ -1,0 +1,69 @@
+%
+% NUMINTEGR.H
+%
+
+\chapter{Numerical integration (numintegr.h)}
+
+\section{Introduction}
+
+In this chapter numerical methods to compute defined integrals will be defined.\\
+
+The following libraries will be used:
+%
+\begin{itemize}
+\item \href{http://www.openmp.org/}{OpenMP} the Open Multi-Processing API which provides multiplatform shared memory capabilities for parallel programming.
+\end{itemize}
+
+\section{The midpoint rule (threaded version)}
+
+This implementation of the midpoint rule is a multithreaded implementation using \href{http://www.openmp.org}{OpemMP}.\\
+
+Using $n$ subintervals the midpoint rule:
+%
+\begin{displaymath}
+\int_a^b f(x) dx \approx \sum_{i=0}^{n-1} f(\frac{1}{2}\cdot (x_i + x_{i+i})) \bigtriangleup x \quad \textrm{where} \quad \bigtriangleup x = \frac{b - a}{n}  
+\end{displaymath}
+%
+
+\subsection{\texttt{threadedMidPointRule} function} \label{sec:threadedMidPointRule}
+
+This function uses a threaded version of the midpoint rule to compute an integral over an inteval.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+long double threadedMidPointRule(int intThreads, int intN, 
+          double a, double b, long double (*func)(double x));  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[intThreads] number of threads to be used.
+\item[intN] number of subintervals to be used.
+\item[a] Interval left endpoint.
+\item[b] Interval right endpoint.
+\item[func] C function's pointer to a function implementing the function we want to compute the integral. This function needs to have one long double argument and returns the function's value in the argument point (as long double).
+\end{description}
+
+\subsubsection{Usage example}
+
+To compute:
+%
+\begin{displaymath}
+\int_{0}^{1} \frac{1}{1+x^2} dx
+\end{displaymath}
+%
+the implementation of the \texttt{func} would be:
+%
+\begin{verbatim}
+long double func(double x) {
+  return (1/(1+(x*x)));
+}
+\end{verbatim}
+%
+and to compute it using $4$ threads an $15000$ subintervals:
+%
+\begin{verbatim}
+value = threadedMidPointRule(4, 15000, 0., 1., &func);  
+\end{verbatim}

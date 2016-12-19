@@ -18,13 +18,15 @@
 int main (void) {
 
   int intThreads = 4,
-      intIterations = 2;
+      intN = 50000;
 
   long double pi = .0;
 
-  printf("Using %d threads and %d iterations to compute PI decimals (mid point rule).\n", intThreads, intIterations);
+  printf("Using %d threads and %d subintervals to compute PI decimals (midpoint rule).\n", intThreads, intN);
 
-  pi = threadedPiMidPointRule(intThreads, intIterations);
+  pi = threadedPiMidPointRule(intThreads, intN);
+
+  pi *= (long double)(4.);
 
   printf("Pi: %.80Lf\n", pi);
 

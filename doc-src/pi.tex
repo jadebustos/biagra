@@ -15,8 +15,35 @@ The following libraries will be used:
 \item \href{https://gmplib.org/}{GMP} the GNU Multiple Precision Arithmetic Library.
 \end{itemize}
 
-\section{The mid point rule}
+\section{The midpoint rule method}
 
+To compute $\pi$ value using the midpoint rule the following is used:
+%
 \begin{displaymath}
-\pi = 4 \cdot \int_0^1 \frac{1}{1+x^2} dx \approx \frac{4}{n} \cdot \sum_{i=0}^n \frac{1}{1+x_i^2} \quad \textrm{where} \quad x_i = \frac{i -\frac{1}{2}}{n}
+\int_0^1 \frac{1}{1+x^2} dx = \frac{\pi}{4}
 \end{displaymath}
+%
+So:
+%
+\begin{displaymath}
+\pi = 4 \cdot \int_0^1 \frac{1}{1+x^2} dx
+\end{displaymath}
+
+\subsection{\texttt{threadedPiMidPointRule} function}
+
+This function approaches $\pi$ using the midpoint rule.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+long double threadedPiMidPointRule(int intThreads, int intN);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[intThreads] number of threads to be used.
+\item[intN] number of subintervals to be used.
+\end{description}
+
+\note{To compute the integral the midpoint rule will be used. The implementation used for the midpoint rule used is the one provided by \BI \ in section \ref{sec:threadedMidPointRule}.}
