@@ -148,7 +148,7 @@ where:
 %
 \begin{description}
 \item[ptData] pointer to a \textbf{biaDataRK} variable\footnote{Section (\ref{sec:biaDataRK}).}. This variable contains all the necessary data to solve the \emph{I.V.P.}
-\item[PVI] C function's pointer to a function implementing the \emph{O.D.E.}. This functions needs to have two double arguments and returns the value of the \emph{I.V.P.}:
+\item[IVP] C function's pointer to a function implementing the \emph{O.D.E.}. This functions needs to have two double arguments and returns the value of the \emph{I.V.P.}:
 \begin{description}
 	\item[dblX] point where we want to evaluate the \emph{O.D.E.}
 	\item[dblY] \emph{O.D.E.} value in \texttt{dblX} ($y_i \approx y(x_i)$).

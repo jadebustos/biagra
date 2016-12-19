@@ -2,8 +2,6 @@
 #include <limits.h>
 #include <omp.h>
 
-#include <biagra/numintegr.h>
-
 /*                                                                      */
 /*      B.I.A.G.R.A.    (c) 2013 Jose Angel de Bustos Perez             */
 /*                       <jadebustos@gmail.com>                         */
@@ -24,30 +22,40 @@
 */
 
 /*                                                                      */
-/* This function is used to compute pi used the midpoint rule.          */
-/*                                                                      */
-
-long double pifunc(double x) {
-  return (1./(1. + (x*x)));
-}
-
-/*                                                                      */
-/* Function to get a pi approximation using the mid-point rule.         */
+/* Function to get a numerical approximation for a functions' integral  */
+/* in [a,b].                                                            */ 
 /*                                                                      */
 /* Arguments:                                                           */
 /*    intThreads -> Number of threads used                              */
 /*    intN       -> Number of used subintervals                         */                                                                          
+/*    (a, b)     -> Interval to compute the integral                    */
+/*    (*func)    -> Pointer to a integral's function                    */
 /*                                                                      */
-/* Pi approximation is returned as long double.                         */
+/* The approximation is returned as long double.                        */
 /*                                                                      */
 
-long double threadedPiMidPointRule(int intThreads, int intN) {
+long double threadedMidPointRule(int intThreads, int intN, double a, double b, long double (*func)(double x)) {
 
-  long double pifunc(double x);
-  
-  long double pi;
+  int i = 0;
 
-  pi = threadedMidPointRule(intThreads, intN, .0, 1., &pifunc);
+  long double xi = .0,
+              dx = (long double)((b - a)/intN),
+              approx = .0;
 
-  return pi;
+  #pragma omp parallel num_threads(intThreads) private(xi)
+  { 
+    #pragma omp for reduction(+: approx) schedule(dynamic, intThreads)
+    for(i=0;i<intN;i++) {
+      xi = .5*((a + i*dx) + (a + (i+1)*dx));
+      approx = approx + func(xi);     
+    } 
+    #pragma omp barrier
+    #pragma omp sections
+    { 
+      approx *= dx;
+    } 
+  } 
+
+  return approx;
 }
+

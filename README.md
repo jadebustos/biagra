@@ -40,6 +40,7 @@ Just use the header file and link the following libs together with **-lbiagra**:
 | complex    | Yes |  No   |    No    |
 | integers   | Yes |  No   |    No    |
 | matrix     | No  |  No   |    No    |
+| numintegr  | No  |  No   |    Yes   |
 | pi         | No  |  No   |    Yes   |
 | polynomial | No  |  No   |    No    |
 | resmem     | No  |  No   |    No    |

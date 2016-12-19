@@ -1,8 +1,5 @@
-#include <stdlib.h>
-#include <limits.h>
-#include <omp.h>
-
-#include <biagra/numintegr.h>
+#ifndef _NUMINTEGR_H
+  #define _NUMINTEGR_H
 
 /*                                                                      */
 /*      B.I.A.G.R.A.    (c) 2013 Jose Angel de Bustos Perez             */
@@ -24,30 +21,18 @@
 */
 
 /*                                                                      */
-/* This function is used to compute pi used the midpoint rule.          */
-/*                                                                      */
-
-long double pifunc(double x) {
-  return (1./(1. + (x*x)));
-}
-
-/*                                                                      */
-/* Function to get a pi approximation using the mid-point rule.         */
+/* Function to get a numerical approximation for a functions' integral  */
+/* between a and b.                                                     */ 
 /*                                                                      */
 /* Arguments:                                                           */
 /*    intThreads -> Number of threads used                              */
-/*    intN       -> Number of used subintervals                         */                                                                          
+/*    intN       -> Number of used rectangles                           */                                                                          
+/*    (a, b)     -> Interval to compute the integral                    */
+/*    (*func)    -> Pointer to a integral's function                    */
 /*                                                                      */
-/* Pi approximation is returned as long double.                         */
+/* A approximation is returned as long double.                          */
 /*                                                                      */
 
-long double threadedPiMidPointRule(int intThreads, int intN) {
+  long double threadedMidPointRule(int intThreads, int intN, double a, double b, long double (*func)(double x));
 
-  long double pifunc(double x);
-  
-  long double pi;
-
-  pi = threadedMidPointRule(intThreads, intN, .0, 1., &pifunc);
-
-  return pi;
-}
+#endif
