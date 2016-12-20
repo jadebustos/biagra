@@ -24,12 +24,22 @@
 /* Function to get a pi approximation using the mid-point rule.         */
 /*                                                                      */
 /* Arguments:                                                           */
-/*    intThreads    -> Number of threads used                           */
+/*    intThreads    -> Number of threads to be used                     */
 /*    intIterations -> Iterations used to compute pi                    */                                                                          
 /*                                                                      */
 /* Pi approximation is returned as long double.                         */
 /*                                                                      */
 
   long double threadedPiMidPointRule(int intThreads, int intIterations);
+
+/*                                                                      */
+/* Function to get a pi approximation using the Chudnovsky algorithm.   */
+/*                                                                      */
+/* Arguments:                                                           */
+/*    intThreads  -> Number of threads to be used                       */
+/*    intPiDigits -> Number of pi digits to be computed                 */
+/*                                                                      */
+
+  void chudnovskyPi(int intThreads, int intPiDigits);
 
 #endif
