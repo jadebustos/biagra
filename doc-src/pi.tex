@@ -64,3 +64,25 @@ For high performance computation:
 %
 
 \subsection{\texttt{chudnovskyPi} function}
+
+This function approaches $\pi$ using the Chudnovsky algorithm.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+int chudnovskyPi(int intThreads, int intPiDigits, char *ptPi);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[intThreads] number of threads to be used.
+\item[intPiDigits] number of $\pi$ digits to compute.
+\item[ptPi] char point to store $\pi$ as a string.
+\end{description}
+
+\note{This algorithm uses the \textbf{GNU Multiple Precision Library (GMP)} to be able to perform all the computations. C default number types do not provide enough precision.}
+
+\note{This algorithm uses \textbf{OpenMP} to be able to parallelize computations.}
+
+\note{\texttt{ptPi} must be initialized to store $\pi$ as a string. For instance to store $100$ $\pi$ digits the size to allocate memory is $102$ to include the ``\texttt{.}'' character and the ``null character'' at the end of the string.}
