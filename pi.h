@@ -20,16 +20,30 @@
      - Reverse spelling of this source code
 */
 
+/* decimal digits per iteration that Chudnovsky algorithm generates in each iteration */
+#define DIGITS_ITERATION 14.1816474627254776555
+
 /*                                                                      */
 /* Function to get a pi approximation using the mid-point rule.         */
 /*                                                                      */
 /* Arguments:                                                           */
-/*    intThreads    -> Number of threads used                           */
+/*    intThreads    -> Number of threads to be used                     */
 /*    intIterations -> Iterations used to compute pi                    */                                                                          
 /*                                                                      */
 /* Pi approximation is returned as long double.                         */
 /*                                                                      */
 
   long double threadedPiMidPointRule(int intThreads, int intIterations);
+
+/*                                                                      */
+/* Function to get a pi approximation using the Chudnovsky algorithm.   */
+/*                                                                      */
+/* Arguments:                                                           */
+/*    intThreads  -> Number of threads to be used                       */
+/*    intPiDigits -> Number of pi digits to be computed                 */
+/*    ptPi        -> Char pointer to store pi                           */
+/*                                                                      */
+
+  int chudnovskyPi(int intThreads, int intPiDigits, char *ptPi);
 
 #endif
