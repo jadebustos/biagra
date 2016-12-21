@@ -1,9 +1,10 @@
-2016-12-19  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
+2016-12-21  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
 
-	* numintegr.c/numinteger.h: threaded midpoint rule added. 
-	* pi.c/pi.h: midpoint rule to compute pi.
+	* pi.c (chudnovskyPi): included Chudnovsky algorithm to compute Pi digits. 
+	* numintegr.c (threadedMidPointRule): included threaded midpoint rule. 
 	* examples/numintegr/numintegr-threadedMidPointRule.c: example of the midpoint rule.
 	* examples/pi/pi-threadedPiMidPointRule.c: example of the pi computation using the mid point rule. 
+	* pi.c (threadedPiMidPointRule): included midpoint rule to compute pi.
 	* rngkutta.c: Last value stored in biaDataRK variable.
 	* Documentation updates.
 
