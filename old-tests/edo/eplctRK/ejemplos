@@ -1,0 +1,35 @@
+EJEMPLO 1
+---------
+
+y' = (x*y-y^2)/x^2
+y(1) = 2
+
+solucion y = x/((.5)+ln x)
+
+Paso 1/128 = 7.8125e-3
+
+y(3) = 1.87663
+
+EJEMPLO 2
+---------
+
+y' = -y + x^2 + 1
+y(0) = 1
+
+solucion y = -2*e^(-x) + x^2 -2x + 3
+
+Paso 0.1
+
+y(1) = 1.2642411
+
+EJEMPLO 3
+---------
+
+y' = -y + x + 1
+y(0) = 1
+
+solucion y = x + e^-x
+
+Paso 0.1
+
+y(1) = 1.3678794412
