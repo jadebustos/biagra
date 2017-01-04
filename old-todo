@@ -1,0 +1,67 @@
+primos.c
+
+	1) Calcular la descomposicion en numeros primos de un numero.
+
+complejo.c
+
+	1) Evaluar un polinomio real en un valor complejo.
+	2) Evaluar un polinomio complejo en un valor complejo.
+	3) Potencias de un numero complejo.
+		3.1) Raices de un numero complejo.
+	4) Raices n-esimas de la unidad.
+	5) Raices n-esimas primitivas de la unidad.
+	
+interpol.c
+
+	1) Polinomio interpolador.
+		1.1) Interpolacion a trozos.
+	2) Calcular la tabla de diferencias.
+	3) Raices de los polinomios de Chebyshev.
+
+polinomios.c
+
+	1) Calcular las raices de un polinomio mediante los metodos:
+		1.1) Secante.
+	2) Calculo de todas las raices de un polinomio.
+	5) Calcular el opuesto, respecto de la suma, de un polinomio.
+
+matriz.c
+
+	1) Determinar si una matriz es simetrica.	OK
+	2) Reducir una matriz a otra matriz triangular superior o inferior.
+	3) Factorizacion de matrices:
+		3.1) LU.
+		3.2) Cholesky.
+	4) Sumar matrices.
+	5) Multiplicar Matrices.
+	6) Calcular el determinante de una matriz.
+	7) Calcular la inversa de una matriz.
+	8) Calculo de valores y vectores propios.
+
+derivanum.c
+
+	1) Formulas de derivacion numerica:
+		1.1) Extrapolacion de Richardson.
+
+integrnum.c
+
+	1) Formulas de integracion numerica.
+		1.1) Formulas compuestas.
+
+edo.c
+
+	1) Metodos Runge - Kutta:
+		1.1) Explicitos.
+		1.2) Implicitos.
+		1.3) Semiimplicitos.
+		1.4) Adaptativos.
+	2) Metodos Multipaso.
+	3) Metodos Predictor - Corrector.
+
+Sin clasificar:
+
+	1) Eliminacion Gausiana.
+	2) Calculo de todas las raices de una funcion.
+	3) Calculo de las raices de una funcion mediante los metodos:
+		3.1) Secante.
+		3.2) Newton.

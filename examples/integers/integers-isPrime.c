@@ -26,12 +26,11 @@ int main (void) {
   srand((unsigned)time(NULL));
 
   /* initialization */
-  /*n = uintRandom(100000);*/
   n = uintRandom(100);
 
   /* addition */
   i = isPrime(n);
-printf("i: %d\n", i);
+
   /* print to stdout */
   if ( i == BIA_TRUE ){
     printf("%d is a prime number.\n", n);

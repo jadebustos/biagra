@@ -115,3 +115,16 @@ void getFirstNPrimes(unsigned int *ptPrimes, int intNumber, int *ptCalc) {
   *ptCalc = intCalc;
   return;
 } 
+
+/*                                                                      */
+/* Function to get a number factorial                                   */
+/*                                                                      */
+/*                                                                      */
+
+unsigned long int uliFactorial(int intN) {
+
+  if ( intN <= 1. )
+    return 1;
+  else
+    return(intN * uliFactorial(intN - 1));
+}

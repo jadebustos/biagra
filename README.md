@@ -41,8 +41,8 @@ Just use the header file and link the following libs together with **-lbiagra**:
 | integers   | Yes |  No   |    No    |
 | matrix     | No  |  No   |    No    |
 | numintegr  | No  |  No   |    Yes   |
-| pi         | No  |  No   |    Yes   |
-| polynomial | No  |  No   |    No    |
+| pi         | No  |  Yes  |    Yes   |
+| polynomial | Yes |  No   |    No    |
 | resmem     | No  |  No   |    No    |
 | rngkutta   | Yes |  No   |    No    |
 | roots      | Yes |  No   |    No    |

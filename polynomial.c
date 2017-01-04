@@ -1,5 +1,6 @@
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <biagra/polynomial.h>
 #include <biagra/roots.h>
@@ -267,4 +268,86 @@ int newtonPol(biaRealPol *ptPol, biaRealRoot *ptRoot) {
     }
   ptRoot->intIte = i;
   return BIA_FALSE;
+}
+
+/*                                                                      */
+/* Function to get the general form of a polynomial from its roots      */
+/*                                                                      */
+/* Arguments:                                                           */
+/*                                                                      */
+/*    *dblRoots -> real polynomial roots (intNumber dimension)          */
+/*    intNumber -> number of roots                                      */
+/*    *ptPol    -> biaRealPol data structure to store the polynomial    */
+/*                                                                      */
+/* The following values are returned:                                   */
+/*                                                                      */
+/*      BIA_MEM_ALLOC -> Memory allocation error                        */
+/*      BIA_TRUE      -> Success                                        */
+/*                                                                      */
+
+int polFromRealRoots(double *dblRoots, int intNumber, biaRealPol *ptPol) {
+
+  /* auxiliary structures */
+  biaRealPol auxPol1, /* to store (x - ai) polynomial, where ai is a root */
+	     auxPol2; 
+
+  int i;
+
+  /* memory allocation for ptPol */
+  ptPol->dblCoefs = (double *)dblPtMemAllocVec(intNumber + 1);
+  if ( ptPol->dblCoefs == NULL ) {
+    return BIA_MEM_ALLOC;
+  }
+
+  ptPol->dblRoots = (double *)dblPtMemAllocVec(intNumber);
+  if ( ptPol->dblCoefs == NULL  ) {
+    free(ptPol->dblCoefs);
+    return BIA_MEM_ALLOC;
+  }
+
+  /* populating data on ptPol */
+  memcpy(ptPol->dblRoots, dblRoots, intNumber * sizeof(double));
+
+  /* first initializations */
+  ptPol->dblCoefs[0] = -dblRoots[0];
+  ptPol->dblCoefs[1] = 1.;
+  ptPol->intDegree = 1;
+
+  /* only one root */
+  if ( intNumber == 1 ) {
+    return BIA_TRUE;
+  }
+
+  /* memory allocation for auxiliar structures */
+  auxPol1.dblCoefs = (double *)dblPtMemAllocVec(2);
+  if ( auxPol1.dblCoefs == NULL ) {
+    return BIA_MEM_ALLOC;
+  }
+  auxPol1.intDegree = 1;
+  auxPol1.dblCoefs[1] = 1.;
+
+  auxPol2.dblCoefs = (double *)dblPtMemAllocVec(intNumber + 1);
+  if ( auxPol2.dblCoefs == NULL ) {
+    free(auxPol1.dblCoefs);
+    free(ptPol->dblCoefs);
+    free(ptPol->dblRoots);
+    return BIA_MEM_ALLOC;
+  }
+
+  /* p(x) = (x - a0) * (x - a2) * ... * (x - an) */
+  /* p(x) = (x - a0) * q(x) where q(x) = (x - a1) * ... * (x - an) */
+  for(i=1;i<intNumber;i++) {
+    auxPol1.dblCoefs[0] = -dblRoots[i]; /* (x - ai) */ 
+    
+    multiplyPol(&auxPol1, ptPol, &auxPol2);
+    memcpy(ptPol->dblCoefs, auxPol2.dblCoefs, (auxPol2.intDegree + 1) * sizeof(double));
+
+    ptPol->intDegree = auxPol2.intDegree;
+  }
+
+  /* freeing memory from auxiliary structures */
+  free(auxPol1.dblCoefs);
+  free(auxPol2.dblCoefs);
+
+  return BIA_TRUE;
 }
