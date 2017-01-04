@@ -285,7 +285,7 @@ int newtonPol(biaRealPol *ptPol, biaRealRoot *ptRoot) {
 /*      BIA_TRUE      -> Success                                        */
 /*                                                                      */
 
-int polGeneralForm(double *dblRoots, int intNumber, biaRealPol *ptPol) {
+int polFromRealRoots(double *dblRoots, int intNumber, biaRealPol *ptPol) {
 
   /* auxiliary structures */
   biaRealPol auxPol1, /* to store (x - ai) polynomial, where ai is a root */

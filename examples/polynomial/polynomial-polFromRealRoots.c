@@ -46,7 +46,7 @@ int main (void) {
   }
 
   /* get general form */
-  i = polGeneralForm(dblRoots, intRootNumber, &myPol);
+  i = polFromRealRoots(dblRoots, intRootNumber, &myPol);
 
   if ( i == BIA_MEM_ALLOC ) {
     printf("Error in memory assignation.\n");

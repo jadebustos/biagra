@@ -42,7 +42,7 @@ Just use the header file and link the following libs together with **-lbiagra**:
 | matrix     | No  |  No   |    No    |
 | numintegr  | No  |  No   |    Yes   |
 | pi         | No  |  Yes  |    Yes   |
-| polynomial | No  |  No   |    No    |
+| polynomial | Yes |  No   |    No    |
 | resmem     | No  |  No   |    No    |
 | rngkutta   | Yes |  No   |    No    |
 | roots      | Yes |  No   |    No    |

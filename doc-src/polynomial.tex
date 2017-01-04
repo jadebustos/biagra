@@ -26,7 +26,8 @@ This data structure is used to handle polinomials $p(x) \in \mathbb{R}[x]$. \tex
 \item[intDegree] polynomial degree.
 \item[intRealRoots] number of real roots (if any).
 \item[intCompRoots] number of complex roots (if any).
-\item[dblCoef] pointer to store polynomial coeficients.
+\item[dblCoefs] pointer to store polynomial coeficients.
+\item[dblRoots] pointer to store real polynomial roots.
 \end{description}
 %
 \begin{figure}[!h]
@@ -36,7 +37,8 @@ typedef struct {
        intRealRoots = 0,
        intCompRoots = 0;
 
-  double  *dblCoefs;
+  double  *dblCoefs,
+          *dblRoots;
   } biaRealPol;
 \end{verbatim}
 \caption{biaRealPol data structure.} \label{fig:biaRealPol}
@@ -52,8 +54,44 @@ Polynomial coeficients are stored in \texttt{dblCoefs} pointer which has to be p
   \dots & \dots & \dots \\
   \mathrm{dblCoefs[n]} & = & a_n \\
 \end{eqnarray*}
+%
+\note{\texttt{dblRoots} are stored in the same way as \texttt{dblCoefs}.}
 
-\section{Polynomial derivatives}
+\section{Polynomials operations}
+
+\subsection{\texttt{addPol} function}
+
+This function adds two polynomials.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int addPol(biaPol *ptPol1, biaPol *ptPol2, biaPol *ptRes);  
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[ptPol1] pointer to a \texttt{biaRealPol} struct with the first polynomial to be added.
+\item[ptPol2] pointer to a \texttt{biaRealPol} struct with the second polynomial to be added.
+\item[ptRes] pointer to a \texttt{biaRealPol} struct where the add operation will be stored.
+\end{description}
+%
+The following codes are returned:
+%
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_MEM\_ALLOC} & Memory allocation error \\
+\hline
+\textbf{BIA\_TRUE} & Success \\
+\hline
+\end{tabular}
+\end{center}
+%
+\note{\texttt{ptRes} will be released and memory allocation will be carried out to store the derivative.}
+%
+\warning{\texttt{ptRes} member \texttt{dblCoefs} has to be initialized to a \texttt{NULL} pointer to avoid a \textbf{Segment Fault} error if it was not previously initialized.}
 
 \subsection{\texttt{derivativePol} function}
 
@@ -88,24 +126,22 @@ The following codes are returned:
 %
 \warning{\texttt{ptDer} member \texttt{dblCoefs} has to be initialized to a \texttt{NULL} pointer to avoid a \textbf{Segment Fault} error if it was not previously initialized.}
 
-\section{Arithmetical operations using polynomials}
+\subsection{\texttt{multiplyPol} function}
 
-\subsection{\texttt{addPol} function}
-
-This function adds two polynomials.\\ \\
+This functions multiplies two polynomials.\\ \\
 %
 The definition of this function:
 %
 \begin{verbatim}
-int addPol(biaPol *ptPol1, biaPol *ptPol2, biaPol *ptRes);  
+int multiplyPol(biaPol *ptPol1, biaPol *ptPol2, biaPol *ptRes);
 \end{verbatim}
 %
 where:
 %
 \begin{description}
-\item[ptPol1] pointer to a \texttt{biaPol} struct with the first polynomial to be added.
-\item[ptPol2] pointer to a \texttt{biaPol} struct with the second polynomial to be added.
-\item[ptRes] pointer to a \texttt{biaPol} struct where the add operation will be stored.
+\item[ptPol1] pointer to a \texttt{biaRealPol} struct with the first polynomial.
+\item[ptPol2] pointer to a \texttt{biaRealPol} struct with the second polynomial.
+\item[ptRes] pointer to a \texttt{biaRealPol} struct where the multiplication operation will be stored.
 \end{description}
 %
 The following codes are returned:
@@ -123,6 +159,41 @@ The following codes are returned:
 \note{\texttt{ptRes} will be released and memory allocation will be carried out to store the derivative.}
 %
 \warning{\texttt{ptRes} member \texttt{dblCoefs} has to be initialized to a \texttt{NULL} pointer to avoid a \textbf{Segment Fault} error if it was not previously initialized.}
+
+\subsection{\texttt{polFromRealRoots} function}
+
+This function get the polynomial expression from its real roots.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+int polFromRealRoots(double *dblRoots, int intNumber, biaRealPol *ptPol);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[dblRoots] pointer to a \texttt{double} with the polynomial real roots.
+\item[intNumber] number or real roots.
+\item[ptPol] pointer to a \texttt{biaRealPol} struct where the polynomial will be stored.
+\end{description}
+%
+The following codes are returned:
+%
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{BIA\_MEM\_ALLOC} & Memory allocation error \\
+\hline
+\textbf{BIA\_TRUE} & Success \\
+\hline
+\end{tabular}
+\end{center}
+%
+\note{\texttt{intNumber} includes roots multiplicity so \texttt{intNumber} is equal to polynomial degree.}
+%
+\note{Each polynomial root must be included as many times as its multiplicity.}
+%
 
 \subsection{\texttt{subtractPol} function}
 
@@ -137,9 +208,9 @@ int subtractPol(biaPol *ptPol1, biaPol *ptPol2, biaPol *ptRes);
 where:
 %
 \begin{description}
-\item[ptPol1] pointer to a \texttt{biaPol} struct with the first polynomial.
-\item[ptPol2] pointer to a \texttt{biaPol} struct with the polynomial to be subtracted from the above.
-\item[ptRes] pointer to a \texttt{biaPol} struct where the subtract operation will be stored.
+\item[ptPol1] pointer to a \texttt{biaRealPol} struct with the first polynomial.
+\item[ptPol2] pointer to a \texttt{biaRealPol} struct with the polynomial to be subtracted from the above.
+\item[ptRes] pointer to a \texttt{biaRealPol} struct where the subtract operation will be stored.
 \end{description}
 %
 The following codes are returned:
@@ -157,42 +228,6 @@ The following codes are returned:
 \note{\texttt{ptRes} will be released and memory allocation will be carried out to store the derivative.}
 %
 \warning{\texttt{ptRes} member \texttt{dblCoefs} has to be initialized to a \texttt{NULL} pointer to avoid a \textbf{Segment Fault} error if it was not previously initialized.}
-
-\subsection{\texttt{multiplyPol} function}
-
-This functions multiplies two polynomials.\\ \\
-%
-The definition of this function:
-%
-\begin{verbatim}
-int subtractPol(biaPol *ptPol1, biaPol *ptPol2, biaPol *ptRes);
-\end{verbatim}
-%
-where:
-%
-\begin{description}
-\item[ptPol1] pointer to a \texttt{biaPol} struct with the first polynomial.
-\item[ptPol2] pointer to a \texttt{biaPol} struct with the second polynomial.
-\item[ptRes] pointer to a \texttt{biaPol} struct where the multiplication operation will be stored.
-\end{description}
-%
-The following codes are returned:
-%
-\begin{center}
-\begin{tabular}{|l|l|}
-\hline
-\textbf{BIA\_MEM\_ALLOC} & Memory allocation error \\
-\hline
-\textbf{BIA\_TRUE} & Success \\
-\hline
-\end{tabular}
-\end{center}
-%
-\note{\texttt{ptRes} will be released and memory allocation will be carried out to store the derivative.}
-%
-\warning{\texttt{ptRes} member \texttt{dblCoefs} has to be initialized to a \texttt{NULL} pointer to avoid a \textbf{Segment Fault} error if it was not previously initialized.}
-
-
 
 
 

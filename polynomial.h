@@ -134,6 +134,7 @@ typedef struct {
 /*      BIA_TRUE      -> Success                                        */
 /*      BIA_FALSE     -> Fail                                           */
 /*                                                                      */
-  int polGeneralForm(double *dblRoots, int intNumber, biaRealPol *ptPol);
+
+  int polFromRealRoots(double *dblRoots, int intNumber, biaRealPol *ptPol);
 
 #endif
