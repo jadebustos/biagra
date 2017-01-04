@@ -44,4 +44,12 @@
 /*                                                                      */
 
   void getFirstNPrimes(unsigned int *ptPrimes, int intNumber, int *ptCalc);                                                                                                                                     
+/*                                                                      */
+/* Function to get a number factorial                                   */
+/*                                                                      */
+/*                                                                      */
+
+  unsigned long int uliFactorial(int intN);
+
+
 #endif

@@ -1,7 +1,6 @@
 primos.c
 
 	1) Calcular la descomposicion en numeros primos de un numero.
-	2) Calcular los n primeros numeros primos.	OK
 
 complejo.c
 
@@ -23,10 +22,7 @@ polinomios.c
 
 	1) Calcular las raices de un polinomio mediante los metodos:
 		1.1) Secante.
-		1.2) Newton.	OK
 	2) Calculo de todas las raices de un polinomio.
-	3) Sumar polinomios.
-	4) Restar polinomios.
 	5) Calcular el opuesto, respecto de la suma, de un polinomio.
 
 matriz.c

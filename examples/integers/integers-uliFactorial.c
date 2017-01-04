@@ -15,29 +15,25 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of integers-isPrime usage */
+/* Simple example of integers-uliFactorial usage */
 
 int main (void) {
 
-  int n,
-      i;
+  int n;
+
+  unsigned long int myFactorial;
 
   /* random initializaiton */
   srand((unsigned)time(NULL));
 
   /* initialization */
-  n = uintRandom(100);
+  n = uintRandom(20);
 
-  /* addition */
-  i = isPrime(n);
+  /* factorial calculus */
+  myFactorial = uliFactorial(n);
 
   /* print to stdout */
-  if ( i == BIA_TRUE ){
-    printf("%d is a prime number.\n", n);
-  }
-  else {
-    printf("%d not is a prime number.\n", n);
-  }
+  printf("%d factorial: %ld\n", n, myFactorial);
   
   return BIA_TRUE;
 	

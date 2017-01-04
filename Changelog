@@ -2,7 +2,9 @@
 
 	* polynomial.c (polFromRealRoots): get polynomial from real roots. 
 	* examples/polynomial/polynomial-polFromRealRoots.c: polFromRealRoots example.
-	
+	* integers.c (uliFactorial): gets a number factorial.
+	* examples/integers/integers-uliFactorial.c: uliFactorial example.
+
 2016-12-21  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
 
 	* pi.c (chudnovskyPi): included Chudnovsky algorithm to compute Pi digits. 
