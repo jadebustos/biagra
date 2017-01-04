@@ -32,6 +32,7 @@
 /* intCompRoots -> Number of complex roots                              */
 /* dblCoefs     -> Polynomial coefs                                     */
 /*                   dblCoefs[i] = ai                                   */
+/* dblRoots     -> Polynomial roots                                     */
 /*                                                                      */
 
 typedef struct {
@@ -40,7 +41,8 @@ typedef struct {
       intRealRoots,
       intCompRoots;
 
-  double *dblCoefs;        
+  double *dblCoefs,
+	 *dblRoots;        
 } biaRealPol;
 
 /*                                                                      */
@@ -115,5 +117,23 @@ typedef struct {
 /*                                                                      */
 
   int newtonPol(biaRealPol *ptPol, biaRealRoot *ptRoot);
+
+/*                                                                      */
+/* Function to get the general form of a polynomial from its roots      */
+/*                                                                      */
+/* Arguments:                                                           */
+/*                                                                      */
+/*    *dblRoots -> real polynomial roots (intNumber dimension)          */
+/*    intNumber -> number of roots                                      */
+/*    *ptPol    -> biaRealPol data structure to store the polynomial    */
+/*                                                                      */
+/* The following values are returned:                                   */
+/*                                                                      */
+/*      BIA_ZERO_DIV  -> Division by zero                               */
+/*      BIA_MEM_ALLOC -> Memory allocation error                        */
+/*      BIA_TRUE      -> Success                                        */
+/*      BIA_FALSE     -> Fail                                           */
+/*                                                                      */
+  int polGeneralForm(double *dblRoots, int intNumber, biaRealPol *ptPol);
 
 #endif
