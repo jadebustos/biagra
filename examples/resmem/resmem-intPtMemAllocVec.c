@@ -16,7 +16,7 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of dblPtMemAllocVec usage */
+/* Simple example of intPtMemAllocVec usage */
 
 int main (void) {
 
@@ -24,12 +24,12 @@ int main (void) {
   int intElements = 5;
 
   /* Vector declaration */
-  double *dblVector;
+  int *intVector;
 
   /* Memory reservation por vector */
-  dblVector = dblPtMemAllocVec(intElements);
+  intVector = intPtMemAllocVec(intElements);
 
-  if ( dblVector == NULL ) {
+  if ( intVector == NULL ) {
     printf("Error in memory assignation.\n");
     return BIA_MEM_ALLOC;
   }
@@ -37,13 +37,13 @@ int main (void) {
   /* Random coefs between 0 and 100 (not cryptographically secure) */
   srand(time(NULL));
   for(int i=0;i<intElements;i++)
-      dblVector[i] = udblRandom(101);
+      intVector[i] = uintRandom(101);
 
   printf("Random vector:\n\n");
   
   /* Print Vector to stdout */
   for(int i=0;i<intElements;i++)
-      printf("%g ", dblVector[i]);
+      printf("%d ", intVector[i]);
 
   printf("\n");
   
