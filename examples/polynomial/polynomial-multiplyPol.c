@@ -17,7 +17,7 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of addPol usage */
+/* Simple example of multiplyPol usage */
 
 int main (void) {
 
@@ -27,7 +27,7 @@ int main (void) {
 	     myRes;
 
   /* Polynomial order */
-  myPol1.intDegree = 5;
+  myPol1.intDegree = 2;
   myPol2.intDegree = 3;
 
   int i;
@@ -49,15 +49,15 @@ int main (void) {
     return BIA_MEM_ALLOC;
   }
 
-  /* polynomial addition */
-  i = addPol(&myPol1, &myPol2, &myRes);
+  /* polynomial multiplication */
+  i = multiplyPol(&myPol1, &myPol2, &myRes);
 
   /* Printing polynomial to stdout */
   printf("p(x) = ");
   pol2Stdout(&myPol1);
   printf("q(x) = ");
   pol2Stdout(&myPol2);
-  printf("p(x) + q(x) = ");
+  printf("p(x) * q(x) = ");
   pol2Stdout(&myRes);
 
   return BIA_TRUE;
