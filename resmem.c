@@ -186,3 +186,19 @@ void freeMemDblMat(double **dblMatrix, int intRows) {
   return;        
 }
 
+
+/*                                                                      */
+/* Function to free memory from a int pointer matrix.                   */
+/*                                                                      */
+
+void freeMemIntMat(int **intMatrix, int intRows) {
+  int  i;
+
+  for(i=0;i<intRows;i++)
+    free(intMatrix[i]);
+        
+  free(intMatrix);
+
+  return;        
+
+}

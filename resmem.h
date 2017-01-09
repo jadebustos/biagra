@@ -78,4 +78,11 @@
 /*                                                                      */
 
   void freeMemDblMat(double **dblMatrix, int intRows);
+
+/*                                                                      */
+/* Function to free memory from a int pointer matrix.                   */
+/*                                                                      */
+
+  void freeMemIntMat(int **intMatrix, int intRows);
+
 #endif
