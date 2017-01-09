@@ -93,6 +93,27 @@ The following codes are returned:
 %
 \warning{\texttt{ptRes} member \texttt{dblCoefs} has to be initialized to a \texttt{NULL} pointer to avoid a \textbf{Segment Fault} error if it was not previously initialized.}
 
+\subsection{\texttt{dblEvaluatePol} function}
+
+This function returns the polynomial value in a given point.\\ \\
+%
+The definition of this function:
+%
+\begin{verbatim}
+double dblEvaluatePol(biaRealPol *ptPol, double dblX);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[ptPol] pointer to a \texttt{biaRealPol} struct with the polynomial to be evaluated.
+\item[dblX] value in which the polynomial will be evaluated.
+\end{description}
+%
+\note{Polynomial is defined over $\mathbb{R}[x]$.}
+%
+
+
 \subsection{\texttt{derivativePol} function}
 
 This function gets the $n$-th derivative of a polynomial.\\ \\
