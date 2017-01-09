@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include <biagra/resmem.h>
+#include <biagra/random.h>
 #include <biagra/const.h>
 
 /*                                                                      */
@@ -37,7 +38,7 @@ int main (void) {
   srand(time(NULL));
   for(int i=0;i<intOrder;i++) {
     for(int j=0;j<=i;j++) {
-      dblMatrix[i][j] = (double) (rand() % 100);
+      dblMatrix[i][j] = udblRandom(101);
       }
     }
 
@@ -53,6 +54,9 @@ int main (void) {
       }
     printf("\n");
     }
+
+  /* freeing memory */
+  freeMemDblMat(dblMatrix, intOrder);
 
   return BIA_TRUE;
 }

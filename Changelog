@@ -1,3 +1,16 @@
+2017-01-09  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
+
+	* resmem.c (intPtMemAllocMat): integer's array memory allocation.
+	(intPtMemAllocUpperTrMat): integer's upper triangular matrix allocation. 
+	(intPtMemAllocLowerTrMat): integer's lower triangular matrix allocation. 
+	(freeMemIntMat): freeing matrix memory allocation.
+	* examples/resmem/resmem-intPtMemAllocMat.c: intPtMemAllocMat example.
+	* examples/resmem/resmem-intPtMemAllocUpperTrMatMat.c: intPtMemAllocUpperTrMat example.
+	* examples/resmem/resmem-intPtMemAllocLowerTrMat.c: intPtMemAllocLowerTrMat example. 
+	* examples/complex/complex-invSumComplex.c: invSumComplex example.
+	* examples/complex/complex-invMulComplex.c: invMulComplex example.
+	* examples/polynomial/polynomial-multiplyPol.c: multiplyPol example.
+
 2017-01-04  Jose Angel de Bustos Perez  <jadebustos@gmail.com>
 
 	* polynomial.c (polFromRealRoots): get polynomial from real roots. 
@@ -14,4 +27,3 @@
 	* pi.c (threadedPiMidPointRule): included midpoint rule to compute pi.
 	* rngkutta.c: Last value stored in biaDataRK variable.
 	* Documentation updates.
-

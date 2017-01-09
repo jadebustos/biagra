@@ -55,6 +55,40 @@ double *dblPtMemAllocVec(int intElements) {
 }
 
 /*                                                                      */
+/* Function to memory allocation for a bidimensional array of           */
+/* integer elements                                                     */
+/*                                                                      */
+/* Pointer to the first element is returned.                            */
+/*                                                                      */
+
+int **intPtMemAllocMat(int intRows, int intCols) {
+  int i;
+
+  int **intPt;
+
+  /* memory allocation */
+  intPt = (int **)calloc(intRows, sizeof(int *) );
+
+  /* end when error */
+  if ( intPt == NULL  )
+    return intPt;
+  else {
+    for(i=0;i<intRows;i++) {
+      intPt[i] = (int *)calloc(intCols, sizeof(int));
+      if ( intPt[i] == NULL  ) {
+        /* when error, free memory and exit */
+        while ( i-- > 0  )
+          free(intPt[i]);
+        free(intPt);
+        intPt = NULL;
+        break;
+      }
+    }
+  }
+  return intPt;
+} 
+
+/*                                                                      */
 /* Function to memory allocation for a bidimensiaonal array of          */
 /* double elements                                                      */
 /*                                                                      */
@@ -70,7 +104,7 @@ double **dblPtMemAllocMat(int intRows, int intCols) {
 
   dblPt = (double **)calloc(intRows, sizeof(double *) );
 
-  /* end if error */
+  /* end when error */
 
   if ( dblPt == NULL )
     return dblPt;
@@ -78,7 +112,7 @@ double **dblPtMemAllocMat(int intRows, int intCols) {
     for(i=0;i<intRows;i++) {
       dblPt[i] = (double *)calloc(intCols, sizeof(double));
       if ( dblPt[i] == NULL ) {
-      /* if error, free memory and exit */
+      /* when error, free memory and exit */
         while ( i-- > 0 )
           free(dblPt[i]);
         free(dblPt);
@@ -88,6 +122,46 @@ double **dblPtMemAllocMat(int intRows, int intCols) {
     }
   }
   return dblPt;
+}
+
+/*                                                                      */
+/* Function to memory allocation for an upper triangular matrix         */
+/* of integer elements and intOrder order.                              */
+/*                                                                      */
+/* First row: intOrder elements                                         */
+/* Second row: intOrder - 1 elements                                    */
+/* ...                                                                  */
+/* intOrder row: one element                                            */
+/*                                                                      */
+/* Pointer to the first element is returned.                            */
+/*                                                                      */
+
+int **intPtMemAllocUpperTrMat(int intOrder) {
+  int i,
+      intAux = intOrder;
+
+  int **intPt;
+
+  intPt = (int **)calloc(intOrder, sizeof(int *));
+
+  /* end when error */
+
+  if ( intPt == NULL  )
+    return intPt;
+  else {
+    for(i=0;i<intOrder;i++) {
+      intPt[i] = (int *)calloc(intAux--, sizeof(int) );
+      if ( intPt[i] == NULL  ) {
+        /* when error, free memory and exit */                                                                                                        
+        while ( i-- > 0  )
+          free(intPt[i]);   
+        free(intPt);
+        intPt = NULL;
+        break;
+      }
+    }
+  }
+  return intPt;
 }
 
 /*                                                                      */
@@ -103,7 +177,6 @@ double **dblPtMemAllocMat(int intRows, int intCols) {
 /*                                                                      */
 
 double **dblPtMemAllocUpperTrMat(int intOrder) {
-
   int i,
       intAux = intOrder;
 
@@ -111,7 +184,7 @@ double **dblPtMemAllocUpperTrMat(int intOrder) {
 
   dblPt = (double **)calloc(intOrder, sizeof(double *));
 
-  /* end if error */
+  /* end when error */
 
   if ( dblPt == NULL )
     return dblPt;
@@ -119,7 +192,7 @@ double **dblPtMemAllocUpperTrMat(int intOrder) {
     for(i=0;i<intOrder;i++) {
       dblPt[i] = (double *)calloc(intAux--, sizeof(double) );
       if ( dblPt[i] == NULL ) {
-        /* if error, free memory and exit */
+        /* when error, free memory and exit */
         while ( i-- > 0 )
           free(dblPt[i]);   
         free(dblPt);
@@ -131,6 +204,43 @@ double **dblPtMemAllocUpperTrMat(int intOrder) {
   return dblPt;
 }
 
+/*                                                                      */
+/* Function to memory allocation for a lower triangular matrix          */
+/* of integer elements and intOrder order.                              */
+/*                                                                      */
+/* First row: one element                                               */
+/* Second row: two elements                                             */
+/* ...                                                                  */
+/* intOrder row: intOrder elements                                      */
+/*                                                                      */
+/* Pointer to the first element is returned.                            */
+/*                                                                      */
+
+int **intPtMemAllocLowerTrMat(int intOrder) {
+  int i;
+
+  int **intPt;
+
+  intPt = (int **)calloc(intOrder, sizeof(int *) );
+
+  /* end when error */
+  if ( intPt == NULL  )
+    return intPt;
+  else {
+    for(i=0;i<intOrder;i++) {
+      intPt[i] = (int *)calloc(i+1, sizeof(int) );
+      if ( intPt[i] == NULL  ) {
+        /* when error, free memory and exit */
+        while ( i-- > 0  )
+          free(intPt[i]); 
+	free(intPt);
+	intPt = NULL;
+	break;
+      }
+    }
+  }
+  return intPt;
+}
 
 /*                                                                      */
 /* Function to memory allocation for a lower triangular matrix          */
@@ -151,15 +261,14 @@ double **dblPtMemAllocLowerTrMat(int intOrder) {
 
   dblPt = (double **)calloc(intOrder, sizeof(double *) );
 
-  /* end if error */
-
+  /* end when error */
   if ( dblPt == NULL )
     return dblPt;
   else {
     for(i=0;i<intOrder;i++) {
       dblPt[i] = (double *)calloc(i+1, sizeof(double) );
       if ( dblPt[i] == NULL ) {
-        /* if error, free memory and exit */
+        /* when error, free memory and exit */
         while ( i-- > 0 )
           free(dblPt[i]); 
         free(dblPt);

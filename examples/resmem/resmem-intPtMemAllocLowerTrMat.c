@@ -16,7 +16,7 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of dblPtMemAllocUpperTrMat usage */
+/* Simple example of intPtMemAllocLowerTrMat usage */
 
 int main (void) {
 
@@ -24,12 +24,12 @@ int main (void) {
   int intOrder = 5;
 
   /* Matrix declaration */
-  double **dblMatrix;
+  int **intMatrix;
 
   /* Memory reservation por vector */
-  dblMatrix = dblPtMemAllocUpperTrMat(intOrder);
+  intMatrix = intPtMemAllocLowerTrMat(intOrder);
 
-  if ( dblMatrix == NULL ) {
+  if ( intMatrix == NULL ) {
     printf("Error in memory assignation.\n");
     return BIA_MEM_ALLOC;
   }
@@ -37,26 +37,26 @@ int main (void) {
   /* Random coefs between 0 and 100 (not cryptographically secure) */
   srand(time(NULL));
   for(int i=0;i<intOrder;i++) {
-    for(int j=0;j<intOrder - i;j++) {
-      dblMatrix[i][j] = udblRandom(101);
+    for(int j=0;j<=i;j++) {
+      intMatrix[i][j] = uintRandom(101);
       }
     }
 
-  printf("Upper triangular matrix:\n\n");
+  printf("Lower triangular matrix:\n\n");
   
   /* Print Matrix to stdout */
   for(int i=0;i<intOrder;i++) {
     for(int j=0;j<intOrder;j++) {
-	if ( i > j)
+	if ( i < j)
 	    printf("0 ");
 	else
-	    printf("%g ", dblMatrix[i][j-i]);
+	    printf("%d ",intMatrix[i][j]);
       }
     printf("\n");
     }
 
   /* freeing memory */
-  freeMemDblMat(dblMatrix, intOrder);
+  freeMemIntMat(intMatrix, intOrder);
 
   return BIA_TRUE;
 }
