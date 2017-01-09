@@ -16,7 +16,7 @@
 /*      BIbliotecA de proGRamacion cientificA.                          */
 /*                                                                      */
 
-/* Simple example of dblPtMemAllocUpperTrMat usage */
+/* Simple example of intPtMemAllocUpperTrMat usage */
 
 int main (void) {
 
@@ -24,12 +24,12 @@ int main (void) {
   int intOrder = 5;
 
   /* Matrix declaration */
-  double **dblMatrix;
+  int **intMatrix;
 
   /* Memory reservation por vector */
-  dblMatrix = dblPtMemAllocUpperTrMat(intOrder);
+  intMatrix = intPtMemAllocUpperTrMat(intOrder);
 
-  if ( dblMatrix == NULL ) {
+  if ( intMatrix == NULL ) {
     printf("Error in memory assignation.\n");
     return BIA_MEM_ALLOC;
   }
@@ -38,7 +38,7 @@ int main (void) {
   srand(time(NULL));
   for(int i=0;i<intOrder;i++) {
     for(int j=0;j<intOrder - i;j++) {
-      dblMatrix[i][j] = udblRandom(101);
+      intMatrix[i][j] = uintRandom(101);
       }
     }
 
@@ -50,13 +50,12 @@ int main (void) {
 	if ( i > j)
 	    printf("0 ");
 	else
-	    printf("%g ", dblMatrix[i][j-i]);
+	    printf("%d ", intMatrix[i][j-i]);
       }
     printf("\n");
     }
 
   /* freeing memory */
-  freeMemDblMat(dblMatrix, intOrder);
-
+    freeMemIntMat(intMatrix, intOrder);
   return BIA_TRUE;
 }

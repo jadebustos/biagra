@@ -8,6 +8,112 @@
 
 \BI\ includes its own memory allocation functions which are defined in \texttt{resmem.h} file.
 
+\subsection{Upper triangular square matrices}
+
+\BI \ includes several functions to manage this kind of matrices.\\
+
+The way in which \BI \ manages this kind of matrices is described in this section.\\
+
+In a upper triangular square matrix all elements below the diagonal are zero: 
+%
+\begin{displaymath}
+\left( \begin{array}{ccccc}
+  a_{0,0} & a_{0,1} & a_{0,2} & a_{0,3} & a_{0,4} \\
+  0      & a_{1,1} & a_{1,2} & a_{1,3} & a_{1,4} \\ 
+  0      & 0      & a_{2,2} & a_{2,3} & a_{2,4} \\
+  0      & 0      & 0      & a_{3,3} & a_{3,4} \\
+  0      & 0      & 0      & 0      & a_{4,4} \\
+\end{array} \right)
+\end{displaymath}
+%
+For \texttt{intOrder = 5} and a \texttt{double}'s upper triangular square matrix:
+%
+\begin{verbatim}
+myMatrix = dbpPtMemAllocUpperTrMat(5);  
+\end{verbatim}
+%
+and:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Pointer} & \textbf{\# elements} & \textbf{First element} & \textbf{Last element}\\
+    \hline
+    \texttt{myMatrix[0]} & 5 & 0 & 4\\
+    \hline
+    \texttt{myMatrix[1]} & 4 & 0 & 3\\
+    \hline
+    \texttt{myMatrix[2]} & 3 & 0 & 2\\
+    \hline
+    \texttt{myMatrix[3]} & 2 & 0 & 1\\
+    \hline
+    \texttt{myMatrix[4]} & 1 & 0 & 0\\
+    \hline
+  \end{tabular}
+\end{center}
+%
+so:
+%
+\begin{displaymath}
+  myMatrix[i][j] = *(*(myMatrix + i) + j) = \left\{ \begin{array}{ll}
+    a_{i,j+i} & \forall \ i \le j \\
+     & \\
+    0 & \forall \ i > j
+    \end{array} \right.    
+\end{displaymath}
+
+\subsection{Lower triangular square matrices}
+
+\BI \ includes several functions to manage this kind of matrices.\\
+
+The way in which \BI \ manages this kind of matrices is described in this section.\\
+
+In a lower triangular square matrix all elements above the diagonal are zero: 
+%
+\begin{displaymath}
+\left( \begin{array}{ccccc}
+  a_{0,0} & 0      & 0      & 0      & 0 \\
+  a_{1,0} & a_{1,1} & 0      & 0      & 0 \\ 
+  a_{2,0} & a_{2,1} & a_{2,2} & 0      & 0 \\
+  a_{3,0} & a_{3,1} & a_{3,2} & a_{3,3} & 0 \\
+  a_{4,0} & a_{4,1} & a_{4,2} & a_{4,3} & a_{4,4} \\
+\end{array} \right)
+\end{displaymath}
+%
+For \texttt{intOrder = 5} and a \texttt{doubles}'s lower triangular square matrix:
+%
+\begin{verbatim}
+myMatrix = dbpPtMemAllocLowerTrMat(5);  
+\end{verbatim}
+%
+and:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Pointer} & \textbf{\# elements} & \textbf{First element} & \textbf{Last element}\\
+    \hline
+    \texttt{myMatrix[0]} & 1 & 0 & 0\\
+    \hline
+    \texttt{myMatrix[1]} & 2 & 0 & 1\\
+    \hline
+    \texttt{myMatrix[2]} & 3 & 0 & 2\\
+    \hline
+    \texttt{myMatrix[3]} & 4 & 0 & 3\\
+    \hline
+    \texttt{myMatrix[4]} & 5 & 0 & 4\\
+    \hline
+  \end{tabular}
+\end{center}
+%
+so:
+%
+\begin{displaymath}
+  myMatrix[i][j] = *(*(myMatrix + i) + j) = \left\{ \begin{array}{ll}
+    a_{i,j} & \forall \ i \le j \\
+     & \\
+    0 & \forall \ i < j
+    \end{array} \right.    
+\end{displaymath}
+
 \section{Vector's memory allocation}
 
 Some functions are provided to handle memory allocations for vectors.
@@ -69,53 +175,6 @@ double **dblPtMemAllocUpperTrMat(int intOrder);
 
 This function has only one argument, \texttt{intOrder}, which is the order of the matrix and a \texttt{double} pointer to pointer is returned.\\
 
-In a upper triangular square matrix all elements below the diagonal are zero: 
-%
-\begin{displaymath}
-\left( \begin{array}{ccccc}
-  a_{0,0} & a_{0,1} & a_{0,2} & a_{0,3} & a_{0,4} \\
-  0      & a_{1,1} & a_{1,2} & a_{1,3} & a_{1,4} \\ 
-  0      & 0      & a_{2,2} & a_{2,3} & a_{2,4} \\
-  0      & 0      & 0      & a_{3,3} & a_{3,4} \\
-  0      & 0      & 0      & 0      & a_{4,4} \\
-\end{array} \right)
-\end{displaymath}
-%
-For \texttt{intOrder = 5}:
-%
-\begin{verbatim}
-myMatrix = dbpPtMemAllocUpperTrMat(5);  
-\end{verbatim}
-%
-and:
-\begin{center}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Pointer} & \textbf{\# elements} & \textbf{First element} & \textbf{Last element}\\
-    \hline
-    \texttt{myMatrix[0]} & 5 & 0 & 4\\
-    \hline
-    \texttt{myMatrix[1]} & 4 & 0 & 3\\
-    \hline
-    \texttt{myMatrix[2]} & 3 & 0 & 2\\
-    \hline
-    \texttt{myMatrix[3]} & 2 & 0 & 1\\
-    \hline
-    \texttt{myMatrix[4]} & 1 & 0 & 0\\
-    \hline
-  \end{tabular}
-\end{center}
-%
-so:
-%
-\begin{displaymath}
-  myMatrix[i][j] = *(*(myMatrix + i) + j) = \left\{ \begin{array}{ll}
-    a_{i,j+i} & \forall \ i \le j \\
-     & \\
-    0 & \forall \ i > j
-    \end{array} \right.    
-\end{displaymath}
-
 \subsection{\texttt{dblPtMemAllocLowerTrMat} function} \label{sec:dblPtMemAllocLowerTrMat}
 
 This function allowcates memory for a lower triangular square matrix.\\
@@ -128,52 +187,45 @@ double **dblPtMemAllocLowerTrMat(int intOrder);
 
 This function has only one argument, \texttt{intOrder}, which is the order of the matrix and a \texttt{double} pointer to pointer is returned.\\
 
-In a lower triangular square matrix all elements above the diagonal are zero: 
-%
-\begin{displaymath}
-\left( \begin{array}{ccccc}
-  a_{0,0} & 0      & 0      & 0      & 0 \\
-  a_{1,0} & a_{1,1} & 0      & 0      & 0 \\ 
-  a_{2,0} & a_{2,1} & a_{2,2} & 0      & 0 \\
-  a_{3,0} & a_{3,1} & a_{3,2} & a_{3,3} & 0 \\
-  a_{4,0} & a_{4,1} & a_{4,2} & a_{4,3} & a_{4,4} \\
-\end{array} \right)
-\end{displaymath}
-%
-For \texttt{intOrder = 5}:
+\subsection{\texttt{intPtMemAllocMat} function} \label{sec:intPtMemAllocMat}
+
+This function allowcates memory for a integer's upper square matrix.\\
+
+The definition of this function:
 %
 \begin{verbatim}
-myMatrix = dbpPtMemAllocLowerTrMat(5);  
+int **intPtMemAllocMat(int intRows, int intCols);
 \end{verbatim}
+where:
 %
-and:
-\begin{center}
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Pointer} & \textbf{\# elements} & \textbf{First element} & \textbf{Last element}\\
-    \hline
-    \texttt{myMatrix[0]} & 1 & 0 & 0\\
-    \hline
-    \texttt{myMatrix[1]} & 2 & 0 & 1\\
-    \hline
-    \texttt{myMatrix[2]} & 3 & 0 & 2\\
-    \hline
-    \texttt{myMatrix[3]} & 4 & 0 & 3\\
-    \hline
-    \texttt{myMatrix[4]} & 5 & 0 & 4\\
-    \hline
-  \end{tabular}
-\end{center}
+\begin{description}
+\item[intRows] number of rows.
+\item[intCols] number of columns.
+\end{description}
+
+\subsection{\texttt{intPtMemAllocUpperTrMat} function} \label{sec:intPtMemAllocUpperTrMat}
+
+This function allowcates memory for a integer's upper triangular square matrix.\\
+
+The definition of this function:
 %
-so:
+\begin{verbatim}
+int **intPtMemAllocUpperTrMat(int intOrder);
+\end{verbatim}
+
+This function has only one argument, \texttt{intOrder}, which is the order of the matrix and a \texttt{int} pointer to pointer is returned.\\
+
+\subsection{\texttt{intPtMemAllocLowerTrMat} function} \label{sec:intPtMemAllocLowerTrMat}
+
+This function allowcates memory for a integer's lower triangular square matrix.\\
+
+The definition of this function:
 %
-\begin{displaymath}
-  myMatrix[i][j] = *(*(myMatrix + i) + j) = \left\{ \begin{array}{ll}
-    a_{i,j} & \forall \ i \le j \\
-     & \\
-    0 & \forall \ i < j
-    \end{array} \right.    
-\end{displaymath}
+\begin{verbatim}
+int **intPtMemAllocLowerTrMat(int intOrder);
+\end{verbatim}
+
+This function has only one argument, \texttt{intOrder}, which is the order of the matrix and a \texttt{int} pointer to pointer is returned.\\
 
 \section{Freeing memory} \label{sec:freeingMemory}
 
@@ -181,4 +233,35 @@ so:
 
 \subsection{\texttt{freeMemDblMat} function} \label{sec:freeMemDblMat}
 
+This functions frees memory for a matrix of doubles.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+ void freeMemDblMat(double **dblMatrix, int intRows);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[dblMatrix] double array to gree memory.
+\item[intRows] number of matrix rows.
+\end{description}
+
+\subsection{\texttt{freeMemIntMat} function} \label{sec:freeMemIntMat}
+
+This functions frees memory for a matrix of integers.\\
+
+The definition of this function:
+%
+\begin{verbatim}
+ void freeMemIntMat(int **intMatrix, int intRows);
+\end{verbatim}
+%
+where:
+%
+\begin{description}
+\item[intMatrix] integer array to gree memory.
+\item[intRows] number of matrix rows.
+\end{description}
 

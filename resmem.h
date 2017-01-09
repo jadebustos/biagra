@@ -28,6 +28,15 @@
 
   int *intPtMemAllocVec(int intElements);
 
+ /*                                                                      */
+ /* Function to memory allocation for a bidimensional array of           */
+ /* integer elements                                                     */
+ /*                                                                      */
+ /* Pointer to the first element is returned.                            */
+ /*                                                                      */
+
+  int **intPtMemAllocMat(int intRows, int intCols);
+
 /*                                                                      */
 /* Function to memory allocation for an array of double elements.       */
 /*                                                                      */
@@ -47,6 +56,20 @@
 
 /*                                                                      */
 /* Function to memory allocation for an upper triangular matrix         */
+/* of integer elements and intOrder order.                              */
+/*                                                                      */
+/* First row: intOrder elements                                         */
+/* Second row: intOrder - 1 elements                                    */
+/* ...                                                                  */
+/* intOrder row: one element                                            */
+/*                                                                      */
+/* Pointer to the first element is returned.                            */
+/*                                                                      */
+
+  int **intPtMemAllocUpperTrMat(int intOrder);
+
+/*                                                                      */
+/* Function to memory allocation for an upper triangular matrix         */
 /* of double elements and intOrder order.                               */
 /*                                                                      */
 /* First row: intOrder elements                                         */
@@ -58,6 +81,20 @@
 /*                                                                      */
 
   double **dblPtMemAllocUpperTrMat(int intOrder);
+
+/*                                                                      */
+/* Function to memory allocation for a lower triangular matrix          */
+/* of integer elements and intOrder order.                              */
+/*                                                                      */
+/* First row: one element                                               */
+/* Second row: two elements                                             */
+/* ...                                                                  */
+/* intOrder row: intOrder elements                                      */
+/*                                                                      */
+/* Pointer to the first element is returned.                            */
+/*                                                                      */
+
+  int **intPtMemAllocLowerTrMat(int intOrder);
 
 /*                                                                      */
 /* Function to memory allocation for a lower triangular matrix          */
@@ -78,4 +115,11 @@
 /*                                                                      */
 
   void freeMemDblMat(double **dblMatrix, int intRows);
+
+/*                                                                      */
+/* Function to free memory from a int pointer matrix.                   */
+/*                                                                      */
+
+  void freeMemIntMat(int **intMatrix, int intRows);
+
 #endif
