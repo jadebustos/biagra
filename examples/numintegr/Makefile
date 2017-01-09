@@ -1,7 +1,7 @@
 CC=gcc
 
 numintegr:
-	$(CC) numintegr-threadedMidPointRule.c -o numintegr-threadedMidPointRule -lbiagra -fopenmp -lm
+	$(CC) numintegr-threadedMidPointRule.c -o numintegr-threadedMidPointRule.bin -lbiagra -fopenmp -lm
 
 clean:
-	rm -f *.o *~
+	rm -f *.o *~ *.bin
