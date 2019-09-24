@@ -26,7 +26,7 @@
 /*                                                                      */
 /* This data structure is used in Runge-Kutta methods (ODE)             */
 /*                                                                      */
-/* Butcher matricial notation is used in this implimentation.           */
+/* Butcher matricial notation is used in this implementation.           */
 /*                                                                      */
 /*                                                                      */
 /* intStages -> Method stages                                           */
